@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamilton — Debate Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1410;
+    --ink-soft: #4a3f35;
+    --ink-muted: #8a7a6e;
+    --parchment: #f5f0e8;
+    --parchment-warm: #ede5d4;
+    --parchment-deep: #d6c9b2;
+    --gold: #b8902a;
+    --gold-light: #e8c97a;
+    --gold-faint: #f7f0dc;
+    --red: #8b1a1a;
+    --red-soft: #c0392b;
+    --border: rgba(90, 70, 40, 0.18);
+    --border-strong: rgba(90, 70, 40, 0.35);
+    --shadow: 0 2px 16px rgba(90, 60, 20, 0.10);
+    --shadow-lg: 0 8px 40px rgba(90, 60, 20, 0.16);
+    --radius: 2px;
+    --radius-md: 4px;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(184,144,42,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(139,26,26,0.04) 0%, transparent 50%);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    border-bottom: 2px solid var(--gold);
+    padding: 0 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .nav-brand span { color: var(--parchment); font-weight: 400; font-size: 0.8em; letter-spacing: 0.2em; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    background: none;
+  }
+  .nav-link:hover { color: var(--gold-light); border-color: rgba(184,144,42,0.3); }
+  .nav-link.active { color: var(--gold-light); border-color: var(--gold); background: rgba(184,144,42,0.08); }
+
+  /* MAIN LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom: 3rem; border-bottom: 1px solid var(--border-strong); padding-bottom: 1.75rem; }
+  .page-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .page-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--gold); opacity: 0.3; }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .page-title em { color: var(--red); font-style: italic; }
+  .page-subtitle {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* SECTION */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  /* FORM CARD */
+  .form-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .form-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+  .form-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .card-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--gold-faint);
+    color: var(--gold);
+    border: 1px solid rgba(184,144,42,0.25);
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+  }
+
+  /* FORM ELEMENTS */
+  .field-group { margin-bottom: 1.25rem; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: var(--parchment);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.85rem;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,144,42,0.12);
+    background: #fff;
+  }
+  textarea { resize: vertical; min-height: 70px; }
+
+  /* SLIDER ROW */
+  .slider-row {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.65rem 1rem;
+  }
+  .slider-label { font-family: 'Lora', serif; font-size: 0.88rem; color: var(--ink-soft); flex: 1; font-style: italic; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 140px;
+    height: 3px;
+    background: var(--parchment-deep);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  .slider-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--gold);
+    min-width: 24px;
+    text-align: center;
+  }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* SUBPOINT CARDS - with red left border to differentiate */
+  .subpoint-card { border-color: var(--border); }
+  .subpoint-card::before { background: linear-gradient(to bottom, var(--red), #c0392b); }
+
+  /* GENERATE BUTTON */
+  .btn-generate {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--ink);
+    color: var(--gold-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .btn-generate:hover {
+    background: var(--gold);
+    color: var(--ink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(184,144,42,0.3);
+  }
+  .btn-generate:active { transform: translateY(0); }
+  .btn-generate svg { width: 16px; height: 16px; }
+
+  .btn-row { display: flex; justify-content: flex-end; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+
+  /* OUTPUT SECTION */
+  #output-section { display: none; }
+  #output-section.visible { display: block; }
+
+  .output-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 2rem; padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  .output-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .output-title em { color: var(--red); font-style: italic; }
+  .output-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-top: 0.3rem;
+  }
+
+  .hl-swatch {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .hl-swatch:hover { transform: scale(1.15); }
+  .hl-swatch.active { border-color: var(--ink); transform: scale(1.1); }
+
+  .btn-new-case {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-soft);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-new-case:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: #fff5f5;
+  }
+
+  .btn-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-soft);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-copy:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* CASE OUTPUT */
+  .case-document {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .case-doc-header {
+    background: var(--ink);
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--gold);
+  }
+  .case-doc-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    margin-bottom: 0.25rem;
+  }
+  .case-doc-header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .subpoint-section { padding: 2rem; border-bottom: 1px solid var(--border); }
+  .subpoint-section:last-child { border-bottom: none; }
+  .subpoint-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .subpoint-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    background: var(--gold-faint);
+    color: var(--gold);
+    border: 1px solid rgba(184,144,42,0.3);
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .subpoint-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* CARD BLOCK */
+  .card-block {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .card-block:hover { box-shadow: var(--shadow); }
+  .card-block:last-child { margin-bottom: 0; }
+
+  .card-block-header {
+    background: var(--parchment-warm);
+    padding: 0.55rem 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .card-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--red);
+    flex: 1;
+  }
+  .card-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 0.12rem 0.4rem;
+    border-radius: 2px;
+  }
+  .btn-copy-card {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-muted);
+    padding: 0.12rem 0.5rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-copy-card:hover { color: var(--gold); border-color: var(--gold); background: var(--gold-faint); }
+  .btn-copy-card.copied { color: #2e7d32; border-color: #2e7d32; background: #e8f5e9; }
+
+  .card-block-body { padding: 1rem; }
+  .card-cite {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+  .card-cite-author {
+    font-weight: 700;
+    color: var(--ink-soft);
+    font-size: 0.74rem;
+  }
+  .card-cite-date {
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .card-cite-url {
+    color: var(--gold);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+    word-break: break-all;
+    font-size: 0.64rem;
+  }
+  .card-cite-assistant {
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.63rem;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-top: 0.25rem;
+    padding-top: 0.2rem;
+    border-top: 1px dotted rgba(184,144,42,0.25);
+  }
+  .card-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 0.85rem;
+    border-left: 2px solid var(--parchment-deep);
+  }
+  /* Debate-style cut: bold + underlined + highlighted — what the debater reads aloud */
+  .seg-cut {
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 2px;
+    color: var(--ink);
+    font-style: normal;
+    background: var(--hl-color, #ffff00);
+    padding: 0.05em 0.15em;
+    border-radius: 1px;
+  }
+  /* Non-cut: small and muted — surrounding source text, not read aloud */
+  .seg-uncut {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  /* LOADING */
+  .loading-state {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem 2rem;
+    background: var(--gold-faint);
+    border: 1px solid rgba(184,144,42,0.2);
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+  }
+  .loading-state.visible { display: flex; }
+  .loading-text { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--gold); letter-spacing: 0.1em; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(184,144,42,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* DIVIDER */
+  .ornament {
+    text-align: center;
+    color: var(--gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.4em;
+    margin: 2.5rem 0;
+    opacity: 0.5;
+  }
+
+  /* INTRO BLOCK */
+  .intro-block {
+    background: var(--gold-faint);
+    border: 1px solid rgba(184,144,42,0.22);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 2rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+  }
+  .intro-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; opacity: 0.7; }
+  .intro-text { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.6; }
+  .intro-text strong { color: var(--ink); }
+
+  /* ERROR */
+  .error-block {
+    display: none;
+    background: #fff5f5;
+    border: 1px solid rgba(139,26,26,0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.4rem;
+    margin-bottom: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--red);
+    letter-spacing: 0.06em;
+  }
+  .error-block.visible { display: block; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">Hamilton <span>/ Debate</span></a>
+  <div class="nav-links">
+    <button class="nav-link active">Case Writing</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <header class="page-header">
+    <div class="page-eyebrow">Case Writing</div>
+    <h1 class="page-title">Build Your <em>Constructive</em></h1>
+    <p class="page-subtitle">Draft a structured affirmative or negative case with AI-cut evidence cards.</p>
+  </header>
+
+  <div class="intro-block">
+    <span class="intro-icon">⚖️</span>
+    <p class="intro-text">
+      <strong>How it works:</strong> Enter your resolution topic and two contentions below. For each contention, choose how many evidence cards to generate (1–5). Hamilton will cut a full structured case ready for round use.
+    </p>
+  </div>
+
+  <!-- TOPIC CARD -->
+  <div class="form-card">
+    <div class="form-card-title">
+      Resolution
+      <span class="card-badge">Step 1</span>
+    </div>
+    <div class="field-group">
+      <label for="topic">Resolution / Topic</label>
+      <input type="text" id="topic" placeholder="e.g. Resolved: The United States federal government should substantially increase its investment in renewable energy.">
+    </div>
+    <div class="field-group">
+      <label for="side">Debating as</label>
+      <select id="side" style="width:100%; background:var(--parchment); border:1px solid var(--border-strong); border-radius:var(--radius); padding:0.6rem 0.85rem; font-family:'Lora',Georgia,serif; font-size:0.95rem; color:var(--ink); outline:none; cursor:pointer;">
+        <option value="affirmative">Affirmative (Pro)</option>
+        <option value="negative">Negative (Con)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- SUBPOINT 1 -->
+  <div class="form-card subpoint-card">
+    <div class="form-card-title">
+      Contention I
+      <span class="card-badge" style="background:#fff5f5; color:var(--red); border-color:rgba(139,26,26,0.2);">Step 2</span>
+    </div>
+    <div class="field-group">
+      <label for="sub1-title">Contention Title</label>
+      <input type="text" id="sub1-title" placeholder="e.g. Economic Growth and Job Creation">
+    </div>
+    <div class="field-group">
+      <label for="sub1-warrant">Warrant / Argument</label>
+      <textarea id="sub1-warrant" placeholder="Briefly describe the core argument or warrant for this contention..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>Evidence Cards to Cut</label>
+      <div class="slider-row">
+        <span class="slider-label">Number of cards</span>
+        <input type="range" id="sub1-cards" min="1" max="5" value="2" step="1" oninput="document.getElementById('sub1-val').textContent=this.value">
+        <span class="slider-value" id="sub1-val">2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBPOINT 2 -->
+  <div class="form-card subpoint-card">
+    <div class="form-card-title">
+      Contention II
+      <span class="card-badge" style="background:#fff5f5; color:var(--red); border-color:rgba(139,26,26,0.2);">Step 3</span>
+    </div>
+    <div class="field-group">
+      <label for="sub2-title">Contention Title</label>
+      <input type="text" id="sub2-title" placeholder="e.g. Environmental Necessity and National Security">
+    </div>
+    <div class="field-group">
+      <label for="sub2-warrant">Warrant / Argument</label>
+      <textarea id="sub2-warrant" placeholder="Briefly describe the core argument or warrant for this contention..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>Evidence Cards to Cut</label>
+      <div class="slider-row">
+        <span class="slider-label">Number of cards</span>
+        <input type="range" id="sub2-cards" min="1" max="5" value="2" step="1" oninput="document.getElementById('sub2-val').textContent=this.value">
+        <span class="slider-value" id="sub2-val">2</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-generate" id="generate-btn" onclick="generateCase()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Generate Case
+    </button>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" id="loading">
+    <div class="spinner"></div>
+    <span class="loading-text">Cutting evidence cards — drafting your case…</span>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-block" id="error-block"></div>
+
+  <!-- OUTPUT -->
+  <section id="output-section">
+    <div class="ornament">— ✦ —</div>
+
+    <div class="output-header">
+      <div>
+        <div class="output-meta">Generated Case Document</div>
+        <h2 class="output-title" id="output-title">Affirmative Case</h2>
+        <div class="output-meta" id="output-topic-label" style="margin-top:0.25rem;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.4rem;">
+          <span style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);">Highlight</span>
+          <button class="hl-swatch active" id="hl-yellow" onclick="setHlColor('#ffff00',this)" title="Yellow" style="background:#ffff00;"></button>
+          <button class="hl-swatch" id="hl-green"  onclick="setHlColor('#90ee90',this)" title="Green"  style="background:#90ee90;"></button>
+          <button class="hl-swatch" id="hl-teal"   onclick="setHlColor('#7fffd4',this)" title="Teal"   style="background:#7fffd4;"></button>
+        </div>
+        <button class="btn-new-case" onclick="resetCase()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
+          New Case
+        </button>
+      </div>
+    </div>
+
+    <div class="case-document" id="case-document">
+      <div class="case-doc-header">
+        <h2 id="doc-title">1AC — Affirmative Constructive</h2>
+        <p id="doc-meta"></p>
+      </div>
+      <div id="case-body"></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ── Dude don't steal please, im already making this free ─────────────────────────────────────────
+const GROQ_API_KEY = "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";
+// ──────────────────────────────────────────────────────────────────────────
+
+function resetCase() {
+  // Hide output, scroll back to form, clear fields
+  document.getElementById('output-section').className = '';
+  document.getElementById('case-body').innerHTML = '';
+  document.getElementById('error-block').className = 'error-block';
+
+  // Clear all form fields
+  document.getElementById('topic').value = '';
+  document.getElementById('sub1-title').value = '';
+  document.getElementById('sub1-warrant').value = '';
+  document.getElementById('sub2-title').value = '';
+  document.getElementById('sub2-warrant').value = '';
+  document.getElementById('sub1-cards').value = 2;
+  document.getElementById('sub2-cards').value = 2;
+  document.getElementById('sub1-val').textContent = '2';
+  document.getElementById('sub2-val').textContent = '2';
+  document.getElementById('side').value = 'affirmative';
+
+  // Scroll to top of form
+  document.querySelector('.page-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function generateCase() {
+  const topic = document.getElementById('topic').value.trim();
+  const side = document.getElementById('side').value;
+  const sub1Title = document.getElementById('sub1-title').value.trim();
+  const sub1Warrant = document.getElementById('sub1-warrant').value.trim();
+  const sub1Cards = parseInt(document.getElementById('sub1-cards').value);
+  const sub2Title = document.getElementById('sub2-title').value.trim();
+  const sub2Warrant = document.getElementById('sub2-warrant').value.trim();
+  const sub2Cards = parseInt(document.getElementById('sub2-cards').value);
+
+  const errorBlock = document.getElementById('error-block');
+  errorBlock.className = 'error-block';
+
+  if (!topic) { showError('Please enter a resolution or topic.'); return; }
+  if (!sub1Title) { showError('Please enter a title for Contention I.'); return; }
+  if (!sub2Title) { showError('Please enter a title for Contention II.'); return; }
+
+  document.getElementById('loading').className = 'loading-state visible';
+  document.getElementById('output-section').className = '';
+  document.getElementById('generate-btn').disabled = true;
+  document.getElementById('generate-btn').style.opacity = '0.6';
+
+  const sideLabel = side === 'affirmative' ? 'Affirmative' : 'Negative';
+  const speechLabel = side === 'affirmative' ? '1AC — Affirmative Constructive' : '1NC — Negative Constructive';
+
+  const prompt = `You are an expert competitive policy debate coach cutting evidence cards in authentic policy debate style.
+
+Resolution: "${topic}"
+Side: ${sideLabel}
+
+Contention I: "${sub1Title}" — ${sub1Warrant || 'General argument'}. Cards needed: ${sub1Cards}
+Contention II: "${sub2Title}" — ${sub2Warrant || 'General argument'}. Cards needed: ${sub2Cards}
+
+Return ONLY valid JSON, no markdown fences, no preamble.
+
+HOW REAL DEBATE CARDS WORK:
+Real debaters "Frankenstein" evidence — they cut fragments mid-sentence, skip unimportant clauses, and splice together parts from different sentences to form a coherent, impactful read-aloud. The card text is LONG (8-15 sentences of dense academic prose). Cuts are SHORT fragments — often just a phrase or clause, not a full sentence. The uncut text around cuts provides the source context. When read aloud, only the cut (highlighted) portions are spoken, but they must flow together naturally as if one continuous argument.
+
+EXAMPLE of good Frankenstein cutting (what you must replicate):
+Source: "While economists have debated the precise mechanisms, the evidence from longitudinal studies conducted across fourteen OECD nations between 2005 and 2019 suggests that austerity measures, particularly when applied during periods of economic contraction, correlate strongly — in some models, causally — with measurable deterioration in public health outcomes, including elevated mortality rates among working-age populations."
+Spans: [
+  {"text": "While economists have debated the precise mechanisms, the evidence from longitudinal studies conducted across fourteen OECD nations", "cut": false},
+  {"text": "suggests that austerity measures,", "cut": true},
+  {"text": "particularly when applied during periods of economic contraction,", "cut": false},
+  {"text": "correlate strongly — in some models, causally —", "cut": true},
+  {"text": "with measurable deterioration in public health outcomes,", "cut": false},
+  {"text": "including elevated mortality rates among working-age populations.", "cut": true}
+]
+Read aloud: "suggests that austerity measures, correlate strongly — in some models, causally — including elevated mortality rates among working-age populations."
+
+Use this EXACT JSON structure:
+{
+  "tagline": "one sentence framing the ${sideLabel} position",
+  "contentions": [
+    {
+      "number": "I",
+      "title": "contention title",
+      "overview": "2-3 sentence overview",
+      "cards": [
+        {
+          "tag": "Short claim this card proves (10 words max)",
+          "author": "LastName et al.",
+          "year": "2023",
+          "exactDate": "March 14, 2023",
+          "sourceTitle": "Full Title of the Article or Report",
+          "publication": "Journal or Publisher Name",
+          "url": "https://example.com/article (only for online sources; omit for print)",
+          "spans": [
+            {"text": "fragment of source text — can be mid-sentence", "cut": false},
+            {"text": "key impactful phrase or clause", "cut": true},
+            {"text": "rest of that sentence or transition to next", "cut": false},
+            {"text": "another key fragment spliced in", "cut": true},
+            {"text": "...continues for 8-15 total spans across the card", "cut": false}
+          ]
+        }
+      ]
+    },
+    {
+      "number": "II",
+      "title": "contention title",
+      "overview": "2-3 sentence overview",
+      "cards": []
+    }
+  ]
+}
+
+CRITICAL rules:
+- Use "spans" (not "segments") — each span is a SUB-SENTENCE fragment, not a whole sentence
+- Cards must be LONG: 8-15 spans total, representing a dense 6-10 sentence passage of academic prose
+- Cut spans are SHORT: typically a phrase or clause (3-15 words), not a full sentence
+- Cuts must "Frankenstein": when you read only the cut:true spans in sequence, they form a grammatically coherent, impactful argument
+- Uncut spans are the surrounding source text — they can be long, providing academic density
+- Cuts should be scattered throughout, not bunched — skip mid-sentence, grab a clause, jump to another sentence
+- Start with 1-2 uncut context spans before the first cut
+- author, year, exactDate, sourceTitle, publication, url are SEPARATE fields
+- exactDate: full date like "April 7, 2022" matching the year
+- url: plausible https URL for online sources only
+- Make citations realistic: real-sounding names, plausible journals, years 2019-2024
+- Return exactly ${sub1Cards} cards for Contention I and exactly ${sub2Cards} cards for Contention II`;
+
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + GROQ_API_KEY
+      },
+      body: JSON.stringify({
+        model: "meta-llama/llama-4-scout-17b-16e-instruct",
+        max_tokens: 8000,
+        messages: [
+          {
+            role: "system",
+            content: "You are a debate evidence cutting assistant. Respond ONLY with valid compact JSON — no markdown, no backticks, no commentary. Every string value must be a single line with no embedded newlines."
+          },
+          { role: "user", content: prompt }
+        ]
+      })
+    });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message || 'Groq API error');
+    const raw = data.choices[0].message.content;
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const jsonStart = clean.indexOf('{');
+    const jsonEnd = clean.lastIndexOf('}');
+    const jsonStr = (jsonStart !== -1 && jsonEnd !== -1) ? clean.slice(jsonStart, jsonEnd + 1) : clean;
+    const parsed = JSON.parse(jsonStr);
+
+    renderOutput(parsed, topic, sideLabel, speechLabel);
+
+  } catch (err) {
+    showError('Failed to generate case: ' + err.message);
+    console.error(err);
+  } finally {
+    document.getElementById('loading').className = 'loading-state';
+    document.getElementById('generate-btn').disabled = false;
+    document.getElementById('generate-btn').style.opacity = '1';
+  }
+}
+
+function renderOutput(data, topic, sideLabel, speechLabel) {
+  document.getElementById('doc-title').textContent = speechLabel;
+  document.getElementById('doc-meta').textContent = topic.length > 80 ? topic.slice(0, 77) + '…' : topic;
+  document.getElementById('output-title').innerHTML = sideLabel + ' <em>Case</em>';
+  document.getElementById('output-topic-label').textContent = topic;
+
+  let html = '';
+
+  if (data.tagline) {
+    html += `<div style="padding:1.25rem 2rem; border-bottom:1px solid var(--border); background:var(--parchment); font-style:italic; color:var(--ink-soft); font-size:0.9rem; line-height:1.6;">
+      <strong style="font-style:normal; color:var(--ink); font-size:0.62rem; font-family:'DM Mono',monospace; letter-spacing:0.18em; text-transform:uppercase; display:block; margin-bottom:0.35rem;">Thesis</strong>
+      ${escHtml(data.tagline)}
+    </div>`;
+  }
+
+  (data.contentions || []).forEach((contention) => {
+    html += `<div class="subpoint-section">
+      <div class="subpoint-header">
+        <span class="subpoint-num">Contention ${escHtml(contention.number)}</span>
+        <span class="subpoint-title">${escHtml(contention.title)}</span>
+      </div>`;
+
+    if (contention.overview) {
+      html += `<p style="font-size:0.88rem; color:var(--ink-soft); margin-bottom:1.25rem; line-height:1.65; font-style:italic; border-left:3px solid var(--parchment-deep); padding-left:0.85rem;">${escHtml(contention.overview)}</p>`;
+    }
+
+    (contention.cards || []).forEach((card, i) => {
+      const bodyHtml = renderCardSegments(card);
+      const citeHtml = buildCiteHtml(card);
+      // Strip the trailing "— Hamilton debate assistant" from the tag display (it's shown in cite)
+      const tagDisplay = escHtml((card.tag || '').replace(/\s*[—\-]+\s*Hamilton debate assistant\s*$/i, ''));
+      const cardId = 'card-' + Date.now() + '-' + i;
+      html += `<div class="card-block" id="${cardId}">
+        <div class="card-block-header">
+          <span class="card-num">Card ${i + 1}</span>
+          <span class="card-tag">${tagDisplay}</span>
+          <span class="card-status">✓ Cut</span>
+          <button class="btn-copy-card" onclick="copyCard('${cardId}', this)">Copy</button>
+        </div>
+        <div class="card-block-body">
+          <div class="card-cite">${citeHtml}</div>
+          <div class="card-text">${bodyHtml}</div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  document.getElementById('case-body').innerHTML = html;
+  document.getElementById('output-section').className = 'visible';
+  document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function buildCiteHtml(card) {
+  // Line 1: bold author
+  let line1 = '';
+  if (card.author) {
+    line1 = '<span class="card-cite-author">' + escHtml(card.author) + '</span>';
+  } else if (card.citation) {
+    line1 = '<span class="card-cite-author">' + escHtml(card.citation) + '</span>';
+  }
+
+  // Line 2: exactDate (bold) — sourceTitle — publication — url
+  let sourceParts = [];
+  if (card.exactDate) {
+    sourceParts.push('<span class="card-cite-date">' + escHtml(card.exactDate) + '</span>');
+  } else if (card.year) {
+    sourceParts.push('<span class="card-cite-date">' + escHtml(card.year) + '</span>');
+  }
+  if (card.sourceTitle) sourceParts.push(escHtml(card.sourceTitle));
+  if (card.publication) sourceParts.push(escHtml(card.publication));
+  if (card.url && card.url.startsWith('http')) {
+    sourceParts.push('<a class="card-cite-url" href="' + escHtml(card.url) + '" target="_blank" rel="noopener">' + escHtml(card.url) + '</a>');
+  }
+  let line2 = sourceParts.join(' — ');
+
+  // Line 3: Hamilton debate assistant
+  let line3 = '<span class="card-cite-assistant">Hamilton debate assistant</span>';
+
+  return [line1, line2].filter(Boolean).join('<br>') + line3;
+}
+
+function renderCardSegments(card) {
+  // Support both "spans" (new) and "segments" (legacy) field names
+  const items = card.spans || card.segments;
+  if (items && Array.isArray(items)) {
+    // Spans are sub-sentence fragments — join with empty string (no space between),
+    // since the span boundaries fall mid-sentence and spacing is already in the text
+    return items.map((span, i) => {
+      const t = escHtml(span.text);
+      if (span.cut) {
+        return `<span class="seg-cut">${t}</span>`;
+      } else {
+        return `<span class="seg-uncut">${t}</span>`;
+      }
+    }).join('');
+  }
+  if (card.text) return escHtml(card.text);
+  return '';
+}
+
+
+// Shared: write rich HTML to clipboard using a hidden contenteditable div
+// This approach works even when navigator.clipboard.write is blocked by iframe permissions
+function writeClipboard(richHtml, plain, btn, label) {
+  return new Promise(resolve => {
+    // Create a hidden div with the rich HTML, select it, copy via execCommand
+    const div = document.createElement('div');
+    div.contentEditable = 'true';
+    div.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0.01;overflow:hidden;white-space:pre-wrap;background:white;color:black;';
+    div.innerHTML = '<div style="background:white !important;color:black;padding:8px;margin:0;font-family:Georgia,serif;">' + richHtml + '</div>';
+    document.body.appendChild(div);
+
+    // Select all content in the div
+    div.focus();
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(div);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch(e) {}
+
+    sel.removeAllRanges();
+    document.body.removeChild(div);
+
+    // If execCommand failed, try clipboard API as fallback
+    if (!ok) {
+      const fullHtml = '<!DOCTYPE html><html><body>' + richHtml + '</body></html>';
+      if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+        navigator.clipboard.write([new ClipboardItem({
+          'text/html':  new Blob([fullHtml], { type: 'text/html' }),
+          'text/plain': new Blob([plain],    { type: 'text/plain' })
+        })]).catch(() => navigator.clipboard.writeText(plain).catch(() => {}));
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(plain).catch(() => {});
+      }
+    }
+
+    btn.textContent = 'Copied!';
+    if (btn.classList.contains('btn-copy-card')) btn.classList.add('copied');
+    else { btn.style.color='#2e7d32'; btn.style.borderColor='#2e7d32'; }
+    setTimeout(() => {
+      btn.textContent = label;
+      btn.classList.remove('copied');
+      btn.style.color = ''; btn.style.borderColor = '';
+    }, 2000);
+    resolve();
+  });
+}
+
+// Build rich HTML for one card's citation block using semantic tags only
+function buildCiteRich(citeEl) {
+  if (!citeEl) return '';
+  let html = '<p style="margin:0 0 6px 0;padding:0;background:white;color:black;">';
+  citeEl.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      html += esc(node.textContent);
+    } else if (node.nodeName === 'BR') {
+      html += '<br>';
+    } else {
+      const t = node.innerText || node.textContent || '';
+      const cls = node.className || '';
+      if (cls.includes('card-cite-author')) {
+        html += '<b>' + esc(t) + '</b>';
+      } else if (cls.includes('card-cite-date')) {
+        html += '<b>' + esc(t) + '</b>';
+      } else if (cls.includes('card-cite-assistant')) {
+        html += '<br><i>' + esc(t) + '</i>';
+      } else if (cls.includes('card-cite-url') && node.nodeName === 'A') {
+        html += '<a href="' + esc(node.href) + '">' + esc(t) + '</a>';
+      } else {
+        html += esc(t);
+      }
+    }
+  });
+  html += '</p>';
+  return html;
+}
+
+// Build rich HTML for one card's text segments
+// Google Docs needs inline background-color on a span for highlight to survive paste
+// We wrap in mark + span so both clipboard paths work
+function buildBodyRich(textEl) {
+  if (!textEl) return '';
+  const segs = textEl.querySelectorAll('.seg-cut, .seg-uncut');
+  if (!segs.length) return '<p>' + esc(textEl.innerText.trim()) + '</p>';
+  let html = '<p style="margin:0;padding:4px 0;background:white;color:black;">';
+  segs.forEach((s, i) => {
+    // No space separator — spans are sub-sentence fragments, spacing is inside the text
+    const t = esc(s.innerText);
+    if (s.classList.contains('seg-cut')) {
+      html += '<mark><span style="background-color:' + hlColor + ';font-weight:bold;text-decoration:underline;"><strong><u>' + t + '</u></strong></span></mark>';
+    } else {
+      html += '<span style="font-style:italic;color:#666;font-size:0.9em;"><i>' + t + '</i></span>';
+    }
+  });
+  html += '</p>';
+  return html;
+}
+
+// Build plain text for segments
+function buildBodyPlain(textEl) {
+  if (!textEl) return '';
+  const segs = textEl.querySelectorAll('.seg-cut, .seg-uncut');
+  if (!segs.length) return textEl.innerText.trim();
+  // Join with no separator — fragment spacing is embedded in the text itself
+  return Array.from(segs).map(s =>
+    s.classList.contains('seg-cut')
+      ? s.innerText.toUpperCase()
+      : s.innerText.toLowerCase()
+  ).join('');
+}
+async function copyCard(cardId, btn) {
+  const card    = document.getElementById(cardId);
+  if (!card) return;
+  const tagEl   = card.querySelector('.card-tag');
+  const citeEl  = card.querySelector('.card-cite');
+  const textEl  = card.querySelector('.card-text');
+
+  const tagText  = tagEl ? tagEl.innerText.trim() : '';
+  const citePlain = citeEl ? citeEl.innerText.trim() : '';
+  const bodyPlain = buildBodyPlain(textEl);
+
+  const rich =
+    '<h3 style="background:white;color:#8b1a1a;margin:0 0 6px 0;">' + esc(tagText) + '</h3>' +
+    buildCiteRich(citeEl) +
+    buildBodyRich(textEl);
+
+  const plain = tagText + '\n\n' + citePlain + '\n\n' + bodyPlain;
+  await writeClipboard(rich, plain, btn, 'Copy');
+}
+
+// Highlight color state
+let hlColor = '#ffff00';
+
+function setHlColor(color, btn) {
+  hlColor = color;
+  document.querySelectorAll('.hl-swatch').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  // Update CSS variable so all seg-cut elements update instantly
+  document.documentElement.style.setProperty('--hl-color', color);
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-block');
+  el.textContent = '⚠ ' + msg;
+  el.className = 'error-block visible';
+}
+
+</script>
+
+</body>
+</html>
