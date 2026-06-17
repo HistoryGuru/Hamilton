@@ -6,6 +6,7 @@
 <title>Hamilton — Debate Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
 <style>
@@ -478,6 +479,12 @@
     word-break: break-all;
     font-size: 0.64rem;
   }
+  .card-cite-accessed {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    color: var(--ink-muted);
+    font-style: italic;
+  }
   .card-cite-assistant {
     font-style: italic;
     color: var(--gold);
@@ -575,18 +582,200 @@
     letter-spacing: 0.06em;
   }
   .error-block.visible { display: block; }
+
+  /* ── AUTH WALL ──────────────────────────────────────────────────── */
+  #auth-wall {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(184,144,42,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(139,26,26,0.05) 0%, transparent 50%);
+    overflow-y: auto;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+  }
+  #auth-wall.hidden { display: none !important; }
+  .auth-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 2.5rem 2.75rem;
+    width: 100%; max-width: 420px;
+    position: relative;
+  }
+  .auth-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+  .auth-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 900;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink); margin-bottom: 0.2rem;
+  }
+  .auth-brand span { color: var(--gold); }
+  .auth-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 2rem;
+  }
+  .auth-tabs {
+    display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
+  }
+  .auth-tab {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-muted); background: none; border: none;
+    padding: 0.5rem 1rem 0.6rem; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .auth-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .auth-field { margin-bottom: 1rem; }
+  .auth-field label {
+    font-family: 'DM Mono', monospace; font-size: 0.67rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft); display: block; margin-bottom: 0.35rem;
+  }
+  .auth-field input {
+    width: 100%; background: var(--parchment);
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 0.6rem 0.85rem;
+    font-family: 'Lora', Georgia, serif; font-size: 0.95rem; color: var(--ink);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .auth-field input:focus {
+    border-color: var(--gold); background: #fff;
+    box-shadow: 0 0 0 3px rgba(184,144,42,0.12);
+  }
+  .auth-btn {
+    width: 100%; margin-top: 0.5rem;
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    border: 1px solid var(--gold); border-radius: var(--radius);
+    padding: 0.75rem; cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+  .auth-btn:hover { background: var(--gold); color: var(--ink); transform: translateY(-1px); }
+  .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .auth-msg {
+    margin-top: 1rem; padding: 0.65rem 0.9rem;
+    border-radius: var(--radius); font-size: 0.82rem; line-height: 1.5;
+    display: none;
+  }
+  .auth-msg.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; display: block; }
+  .auth-msg.error   { background: #fff5f5; color: var(--red); border: 1px solid rgba(139,26,26,0.25); display: block; }
+  .auth-divider {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-muted); text-align: center;
+    margin: 1.25rem 0; position: relative;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ''; position: absolute; top: 50%;
+    width: 38%; height: 1px; background: var(--border);
+  }
+  .auth-divider::before { left: 0; }
+  .auth-divider::after  { right: 0; }
+  .auth-footer {
+    margin-top: 1.5rem; text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; color: var(--ink-muted);
+  }
+  /* Sign-out button in nav */
+  .nav-signout {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: none; border: 1px solid rgba(184,144,42,0.3);
+    color: var(--ink-muted); padding: 0.3rem 0.75rem;
+    border-radius: var(--radius); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-signout:hover { color: var(--gold-light); border-color: var(--gold); }
+  .nav-user {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.08em; color: var(--ink-muted);
+    max-width: 180px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
 
-<nav>
+<!-- AUTH WALL -->
+<div id="auth-wall">
+  <div class="auth-card">
+    <div class="auth-brand">Hamilton <span>⚖</span></div>
+    <div class="auth-subtitle">Debate Platform — Sign in to continue</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Register</button>
+    </div>
+
+    <!-- SIGN IN -->
+    <div id="form-signin">
+      <div class="auth-field">
+        <label for="si-email">Email</label>
+        <input type="email" id="si-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label for="si-password">Password</label>
+        <input type="password" id="si-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="auth-btn" id="btn-signin" onclick="doSignIn()">Sign In</button>
+      <div class="auth-msg" id="msg-signin"></div>
+      <div class="auth-divider">or</div>
+      <div style="text-align:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--ink-muted);">No account? </span>
+        <button onclick="switchTab('signup')" style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--gold);background:none;border:none;cursor:pointer;text-decoration:underline;">Register here</button>
+      </div>
+    </div>
+
+    <!-- SIGN UP -->
+    <div id="form-signup" style="display:none;">
+      <div class="auth-field">
+        <label for="su-name">Full Name</label>
+        <input type="text" id="su-name" placeholder="Jane Smith" autocomplete="name">
+      </div>
+      <div class="auth-field">
+        <label for="su-email">Email</label>
+        <input type="email" id="su-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label for="su-password">Password <span style="font-weight:400;font-size:0.85em;">(min 8 characters)</span></label>
+        <input type="password" id="su-password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label for="su-password2">Confirm Password</label>
+        <input type="password" id="su-password2" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <button class="auth-btn" id="btn-signup" onclick="doSignUp()">Create Account</button>
+      <div class="auth-msg" id="msg-signup"></div>
+    </div>
+
+    <div class="auth-footer">By registering you agree to use Hamilton responsibly.</div>
+  </div>
+</div>
+
+
+<nav style="display:none;">
   <a class="nav-brand" href="#">Hamilton <span>/ Debate</span></a>
   <div class="nav-links">
     <button class="nav-link active">Case Writing</button>
   </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <span class="nav-user" id="nav-user-email"></span>
+    <button class="nav-signout" id="btn-signout" onclick="doSignOut()" style="display:none;">Sign Out</button>
+  </div>
 </nav>
 
-<main class="main">
+<main class="main" style="display:none;">
 
   <header class="page-header">
     <div class="page-eyebrow">Case Writing</div>
@@ -720,9 +909,143 @@
 </main>
 
 <script>
-// ── Dude don't steal please, im already making this free ─────────────────────────────────────────
-const GROQ_API_KEY = "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";
-// ──────────────────────────────────────────────────────────────────────────
+// ── CONFIGURATION — fill in both keys before deploying ───────────────────
+const GROQ_API_KEY      = "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";
+const SUPABASE_URL      = "https://cmpeyfercutiamhvcxjp.supabase.co";   // e.g. https://xyzabc.supabase.co
+const SUPABASE_ANON_KEY = "sb_publishable_W_TAJjBbEsNo0aXn9WymGg_-BqivcWi";      // public anon key from Supabase dashboard
+// ─────────────────────────────────────────────────────────────────────────
+
+// ── SUPABASE AUTH ─────────────────────────────────────────────────────────
+let _supabase = null;
+
+async function initAuth() {
+  // Guard: if keys aren't filled in yet, skip auth and show app directly (dev mode)
+  if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_PROJECT_URL' ||
+      !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
+    console.warn('Hamilton: Supabase keys not configured — running without auth.');
+    showApp(null);
+    return;
+  }
+
+  // createClient deferred to here so the CDN is guaranteed to be loaded
+  try {
+    _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } catch(e) {
+    console.error('Supabase init failed:', e);
+    showApp(null);
+    return;
+  }
+
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session) {
+      showApp(session.user);
+    } else {
+      showAuthWall();
+    }
+
+    // Listen for auth state changes (e.g. email confirm redirect)
+    _supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) showApp(session.user);
+      else showAuthWall();
+    });
+  } catch(e) {
+    console.error('Supabase auth error:', e);
+    showApp(null);
+  }
+}
+
+function showAuthWall() {
+  document.getElementById('auth-wall').classList.remove('hidden');
+  document.getElementById('auth-wall').style.display = 'flex';
+  document.querySelector('nav').style.display = 'none';
+  document.querySelector('main').style.display = 'none';
+}
+
+function showApp(user) {
+  document.getElementById('auth-wall').classList.add('hidden');
+  document.querySelector('nav').style.display = '';
+  document.querySelector('main').style.display = '';
+  if (user) {
+    document.getElementById('nav-user-email').textContent = user.email;
+    document.getElementById('btn-signout').style.display = '';
+  }
+}
+
+function switchTab(tab) {
+  document.getElementById('form-signin').style.display = tab === 'signin' ? '' : 'none';
+  document.getElementById('form-signup').style.display = tab === 'signup' ? '' : 'none';
+  document.getElementById('tab-signin').classList.toggle('active', tab === 'signin');
+  document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+  document.getElementById('msg-signin').className = 'auth-msg';
+  document.getElementById('msg-signup').className = 'auth-msg';
+}
+
+async function doSignIn() {
+  const email    = document.getElementById('si-email').value.trim();
+  const password = document.getElementById('si-password').value;
+  const btn      = document.getElementById('btn-signin');
+  const msg      = document.getElementById('msg-signin');
+
+  if (!email || !password) { showMsg(msg, 'error', 'Please enter your email and password.'); return; }
+  if (!_supabase) { showMsg(msg, 'error', 'Auth not configured. Add your Supabase keys.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  try {
+    const { error } = await _supabase.auth.signInWithPassword({ email, password });
+    if (error) showMsg(msg, 'error', error.message);
+  } catch(e) {
+    showMsg(msg, 'error', 'Sign in failed: ' + e.message);
+  }
+  btn.disabled = false; btn.textContent = 'Sign In';
+}
+
+async function doSignUp() {
+  const name     = document.getElementById('su-name').value.trim();
+  const email    = document.getElementById('su-email').value.trim();
+  const password = document.getElementById('su-password').value;
+  const confirm  = document.getElementById('su-password2').value;
+  const btn      = document.getElementById('btn-signup');
+  const msg      = document.getElementById('msg-signup');
+
+  if (!name)                         { showMsg(msg, 'error', 'Please enter your full name.'); return; }
+  if (!email)                        { showMsg(msg, 'error', 'Please enter your email address.'); return; }
+  if (password.length < 8)           { showMsg(msg, 'error', 'Password must be at least 8 characters.'); return; }
+  if (password !== confirm)          { showMsg(msg, 'error', 'Passwords do not match.'); return; }
+
+  if (!_supabase) { showMsg(msg, 'error', 'Auth not configured. Add your Supabase keys.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Creating account…';
+  const { error } = await _supabase.auth.signUp({
+    email, password,
+    options: { data: { full_name: name } }
+  });
+  btn.disabled = false; btn.textContent = 'Create Account';
+
+  if (error) {
+    showMsg(msg, 'error', error.message);
+  } else {
+    showMsg(msg, 'success', 'Account created! Check your email to confirm, then sign in.');
+    setTimeout(() => switchTab('signin'), 3000);
+  }
+}
+
+async function doSignOut() {
+  if (_supabase) await _supabase.auth.signOut();
+  document.getElementById('nav-user-email').textContent = '';
+  document.getElementById('btn-signout').style.display = 'none';
+  showAuthWall();
+  resetCase();
+}
+
+function showMsg(el, type, text) {
+  el.className = 'auth-msg ' + type;
+  el.textContent = text;
+}
+
+// Kick off auth check on page load
+window.addEventListener('DOMContentLoaded', initAuth);
+// ─────────────────────────────────────────────────────────────────────────
 
 function resetCase() {
   // Hide output, scroll back to form, clear fields
@@ -807,12 +1130,16 @@ Use this EXACT JSON structure:
       "cards": [
         {
           "tag": "Short claim this card proves (10 words max)",
-          "author": "LastName et al.",
+          "authorFirst": "Jane",
+          "authorLast": "Smith",
+          "additionalAuthors": "and John Doe",
           "year": "2023",
-          "exactDate": "March 14, 2023",
+          "publishDate": "March 14, 2023",
+          "accessDate": "May 29, 2025",
           "sourceTitle": "Full Title of the Article or Report",
-          "publication": "Journal or Publisher Name",
-          "url": "https://example.com/article (only for online sources; omit for print)",
+          "websiteName": "Name of the Website or Organization that published it",
+          "publication": "Journal or Publisher Name (for academic journals/books)",
+          "url": "https://example.com/full-article-url",
           "spans": [
             {"text": "fragment of source text — can be mid-sentence", "cut": false},
             {"text": "key impactful phrase or clause", "cut": true},
@@ -840,9 +1167,16 @@ CRITICAL rules:
 - Uncut spans are the surrounding source text — they can be long, providing academic density
 - Cuts should be scattered throughout, not bunched — skip mid-sentence, grab a clause, jump to another sentence
 - Start with 1-2 uncut context spans before the first cut
-- author, year, exactDate, sourceTitle, publication, url are SEPARATE fields
-- exactDate: full date like "April 7, 2022" matching the year
-- url: plausible https URL for online sources only
+- ALL citation fields are SEPARATE — never combine them
+- authorFirst: author's full first name (e.g. "Neta")
+- authorLast: author's full last name (e.g. "Crawford") — this will be displayed bold
+- additionalAuthors: other authors if any (e.g. "and Catherine Lutz") or empty string ""
+- publishDate: exact publication date like "September 1, 2021"
+- accessDate: realistic date the source was accessed, like "May 12, 2024"
+- sourceTitle: full title of the article or report
+- websiteName: name of the website or organization hosting it (e.g. "Watson Institute for International and Public Affairs") — always include for online sources
+- publication: journal/publisher name for academic journals or books (can overlap with websiteName for think tanks)
+- url: full realistic https URL — ALWAYS include for online sources, omit only for print-only books/journals with no web presence
 - Make citations realistic: real-sounding names, plausible journals, years 2019-2024
 - Return exactly ${sub1Cards} cards for Contention I and exactly ${sub2Cards} cards for Contention II`;
 
@@ -942,32 +1276,42 @@ function renderOutput(data, topic, sideLabel, speechLabel) {
 }
 
 function buildCiteHtml(card) {
-  // Line 1: bold author
+  // ── Line 1: Author(s) — bold last name, normal first name ───────────────
   let line1 = '';
-  if (card.author) {
+  if (card.authorLast || card.authorFirst) {
+    const first = card.authorFirst ? escHtml(card.authorFirst) + ' ' : '';
+    const last  = card.authorLast  ? '<span class="card-cite-author">' + escHtml(card.authorLast) + '</span>' : '';
+    const extra = card.additionalAuthors ? ' ' + escHtml(card.additionalAuthors) : '';
+    line1 = first + last + extra;
+  } else if (card.author) {
     line1 = '<span class="card-cite-author">' + escHtml(card.author) + '</span>';
-  } else if (card.citation) {
-    line1 = '<span class="card-cite-author">' + escHtml(card.citation) + '</span>';
   }
 
-  // Line 2: exactDate (bold) — sourceTitle — publication — url
-  let sourceParts = [];
-  if (card.exactDate) {
-    sourceParts.push('<span class="card-cite-date">' + escHtml(card.exactDate) + '</span>');
-  } else if (card.year) {
-    sourceParts.push('<span class="card-cite-date">' + escHtml(card.year) + '</span>');
-  }
-  if (card.sourceTitle) sourceParts.push(escHtml(card.sourceTitle));
-  if (card.publication) sourceParts.push(escHtml(card.publication));
+  // ── Line 2: Published date (bold) — Source Title — Website/Publisher ────
+  let line2Parts = [];
+  const pubDate = card.publishDate || card.exactDate || card.year || '';
+  if (pubDate) line2Parts.push('<span class="card-cite-date">' + escHtml(pubDate) + '</span>');
+  if (card.sourceTitle) line2Parts.push('<em>' + escHtml(card.sourceTitle) + '</em>');
+  const publisher = card.websiteName || card.publication || '';
+  if (publisher) line2Parts.push(escHtml(publisher));
+  const line2 = line2Parts.join(' — ');
+
+  // ── Line 3: URL ──────────────────────────────────────────────────────────
+  let line3 = '';
   if (card.url && card.url.startsWith('http')) {
-    sourceParts.push('<a class="card-cite-url" href="' + escHtml(card.url) + '" target="_blank" rel="noopener">' + escHtml(card.url) + '</a>');
+    line3 = '<a class="card-cite-url" href="' + escHtml(card.url) + '" target="_blank" rel="noopener">' + escHtml(card.url) + '</a>';
   }
-  let line2 = sourceParts.join(' — ');
 
-  // Line 3: Hamilton debate assistant
-  let line3 = '<span class="card-cite-assistant">Hamilton debate assistant</span>';
+  // ── Line 4: Accessed date ────────────────────────────────────────────────
+  let line4 = '';
+  if (card.accessDate) {
+    line4 = '<span class="card-cite-accessed">Accessed ' + escHtml(card.accessDate) + '</span>';
+  }
 
-  return [line1, line2].filter(Boolean).join('<br>') + line3;
+  // ── Line 5: Hamilton debate assistant ────────────────────────────────────
+  const line5 = '<span class="card-cite-assistant">Hamilton debate assistant</span>';
+
+  return [line1, line2, line3, line4].filter(Boolean).join('<br>') + line5;
 }
 
 function renderCardSegments(card) {
@@ -1045,7 +1389,7 @@ function writeClipboard(richHtml, plain, btn, label) {
 // Build rich HTML for one card's citation block using semantic tags only
 function buildCiteRich(citeEl) {
   if (!citeEl) return '';
-  let html = '<p style="margin:0 0 6px 0;padding:0;background:white;color:black;">';
+  let html = '<p style="margin:0 0 8px 0;padding:0;background:white;color:black;font-family:Georgia,serif;font-size:12px;line-height:1.8;">';
   citeEl.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
       html += esc(node.textContent);
@@ -1059,9 +1403,11 @@ function buildCiteRich(citeEl) {
       } else if (cls.includes('card-cite-date')) {
         html += '<b>' + esc(t) + '</b>';
       } else if (cls.includes('card-cite-assistant')) {
-        html += '<br><i>' + esc(t) + '</i>';
+        html += '<br><i style="color:#b8902a;">' + esc(t) + '</i>';
       } else if (cls.includes('card-cite-url') && node.nodeName === 'A') {
-        html += '<a href="' + esc(node.href) + '">' + esc(t) + '</a>';
+        html += '<a href="' + esc(node.href) + '" style="color:#b8902a;">' + esc(t) + '</a>';
+      } else if (cls.includes('card-cite-accessed')) {
+        html += '<i style="color:#8a7a6e;">' + esc(t) + '</i>';
       } else {
         html += esc(t);
       }
