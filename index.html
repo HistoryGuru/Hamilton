@@ -1586,10 +1586,13 @@ function renderUsageUI() {
   const docxBtn = document.getElementById('btn-download-docx');
   if (docxBtn) docxBtn.style.display = (tierKey === 'varsity') ? '' : 'none';
 
+  // Dev tools panel may be hidden/commented out — guard against missing element
   const devBtn = document.getElementById('btn-dev-toggle');
-  devBtn.textContent = cfg.label + ' (click to cycle tier)';
-  devBtn.classList.toggle('is-pro', tierKey === 'varsity');
-  devBtn.classList.toggle('is-jv', tierKey === 'jv');
+  if (devBtn) {
+    devBtn.textContent = cfg.label + ' (click to cycle tier)';
+    devBtn.classList.toggle('is-pro', tierKey === 'varsity');
+    devBtn.classList.toggle('is-jv', tierKey === 'jv');
+  }
 
   updateCooldownUI();
 }
@@ -2426,12 +2429,14 @@ function showError(msg) {
 
 </script>
 
-<!-- DEV TOOLS — remove or hide before public launch -->
+<!-- DEV TOOLS — hidden for live purchase testing. Uncomment to bring back. -->
+<!--
 <div class="dev-tools">
   <span class="dev-tools-label">Dev</span>
   <button class="btn-dev-toggle" id="btn-dev-toggle" onclick="toggleDevPro()">Free</button>
   <button class="btn-dev-reset" onclick="resetDailyUsage()">Reset usage</button>
 </div>
+-->
 
 </body>
 </html>
