@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
 <style>
@@ -303,6 +304,33 @@
   }
   .hl-swatch:hover { transform: scale(1.15); }
   .hl-swatch.active { border-color: var(--ink); transform: scale(1.1); }
+
+  .btn-download-docx {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: #1a1410;
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-download-docx:hover {
+    background: var(--gold);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+  .btn-download-docx:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
 
   .btn-new-case {
     display: inline-flex;
@@ -687,6 +715,90 @@
     font-family: 'DM Mono', monospace; font-size: 0.62rem;
     letter-spacing: 0.1em; color: var(--ink-muted);
   }
+  /* ── TIER / USAGE SYSTEM ─────────────────────────────────────────── */
+  .tier-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.18rem 0.55rem; border-radius: 2px; flex-shrink: 0;
+  }
+  .tier-badge.free { background: var(--gold-faint); color: var(--gold); border: 1px solid rgba(184,144,42,0.3); }
+  .tier-badge.jv   { background: #fff5f5; color: var(--red); border: 1px solid rgba(139,26,26,0.3); }
+  .tier-badge.pro  { background: #1a1410; color: var(--gold-light); border: 1px solid var(--gold); }
+
+  .usage-bar-wrap {
+    background: var(--parchment-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .usage-bar-track {
+    flex: 1; height: 6px; background: var(--parchment-deep);
+    border-radius: 3px; overflow: hidden;
+  }
+  .usage-bar-fill {
+    height: 100%; background: linear-gradient(to right, var(--gold), var(--gold-light));
+    border-radius: 3px; transition: width 0.3s;
+  }
+  .usage-bar-fill.full { background: linear-gradient(to right, var(--red), var(--red-soft)); }
+  .usage-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.08em; color: var(--ink-soft); white-space: nowrap;
+  }
+
+  .upgrade-banner {
+    display: none;
+    background: #1a1410;
+    border: 1px solid var(--gold);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1.5rem;
+    align-items: center; gap: 1rem; justify-content: space-between;
+  }
+  .upgrade-banner.visible { display: flex; }
+  .upgrade-banner-text { font-size: 0.85rem; color: var(--parchment); line-height: 1.5; }
+  .upgrade-banner-text strong { color: var(--gold-light); }
+  .btn-upgrade {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--gold); color: var(--ink); border: none;
+    padding: 0.6rem 1.3rem; border-radius: var(--radius);
+    cursor: pointer; white-space: nowrap; transition: transform 0.15s, background 0.2s;
+  }
+  .btn-upgrade:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* Dev tools — small, unobtrusive, easy to spot during testing */
+  .dev-tools {
+    position: fixed; bottom: 1rem; right: 1rem; z-index: 500;
+    background: #1a1410; border: 1px solid var(--gold);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.7rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .dev-tools-label {
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .btn-dev-toggle {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: none; border: 1px solid rgba(184,144,42,0.4);
+    color: var(--gold-light); padding: 0.3rem 0.6rem;
+    border-radius: 2px; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-dev-toggle.is-pro { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .btn-dev-toggle.is-jv  { background: var(--red); color: #fff; border-color: var(--red); }
+  .btn-dev-toggle:hover { border-color: var(--gold); }
+  .btn-dev-reset {
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    color: var(--ink-muted); background: none; border: none;
+    cursor: pointer; text-decoration: underline; padding: 0.2rem;
+  }
+  .btn-dev-reset:hover { color: var(--gold-light); }
+
   /* Sign-out button in nav */
   .nav-signout {
     font-family: 'DM Mono', monospace; font-size: 0.68rem;
@@ -790,6 +902,23 @@
     </p>
   </div>
 
+  <!-- USAGE METER -->
+  <div class="usage-bar-wrap">
+    <span class="tier-badge free" id="tier-badge">Novice Tier</span>
+    <div class="usage-bar-track">
+      <div class="usage-bar-fill" id="usage-bar-fill" style="width:0%;"></div>
+    </div>
+    <span class="usage-label" id="usage-label">0 / 20 cards today</span>
+  </div>
+
+  <!-- UPGRADE BANNER (shown when a limit is hit) -->
+  <div class="upgrade-banner" id="upgrade-banner">
+    <div class="upgrade-banner-text" id="upgrade-banner-text">
+      <strong>Daily limit reached.</strong> Free tier allows 20 cards per day. Upgrade to Hamilton Pro for unlimited cutting.
+    </div>
+    <button class="btn-upgrade" onclick="handleUpgradeClick()">Upgrade to Pro</button>
+  </div>
+
   <!-- TOPIC CARD -->
   <div class="form-card">
     <div class="form-card-title">
@@ -827,7 +956,7 @@
       <label>Evidence Cards to Cut</label>
       <div class="slider-row">
         <span class="slider-label">Number of cards</span>
-        <input type="range" id="sub1-cards" min="1" max="5" value="2" step="1" oninput="document.getElementById('sub1-val').textContent=this.value">
+        <input type="range" id="sub1-cards" min="1" max="5" value="2" step="1" oninput="onCardSliderChange('sub1')">
         <span class="slider-value" id="sub1-val">2</span>
       </div>
     </div>
@@ -851,13 +980,17 @@
       <label>Evidence Cards to Cut</label>
       <div class="slider-row">
         <span class="slider-label">Number of cards</span>
-        <input type="range" id="sub2-cards" min="1" max="5" value="2" step="1" oninput="document.getElementById('sub2-val').textContent=this.value">
+        <input type="range" id="sub2-cards" min="1" max="5" value="2" step="1" oninput="onCardSliderChange('sub2')">
         <span class="slider-value" id="sub2-val">2</span>
       </div>
     </div>
   </div>
 
-  <div class="btn-row">
+  <div class="btn-row" style="justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+    <span style="display:flex; flex-direction:column; gap:0.2rem;">
+      <span id="combined-cap-note" style="font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--ink-muted); letter-spacing:0.04em;"></span>
+      <span id="cooldown-note" style="display:none; font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--red); letter-spacing:0.04em;"></span>
+    </span>
     <button class="btn-generate" id="generate-btn" onclick="generateCase()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       Generate Case
@@ -890,6 +1023,10 @@
           <button class="hl-swatch" id="hl-green"  onclick="setHlColor('#90ee90',this)" title="Green"  style="background:#90ee90;"></button>
           <button class="hl-swatch" id="hl-teal"   onclick="setHlColor('#7fffd4',this)" title="Teal"   style="background:#7fffd4;"></button>
         </div>
+        <button class="btn-download-docx" id="btn-download-docx" onclick="downloadCaseAsDocx()" title="Varsity tier feature" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Word
+        </button>
         <button class="btn-new-case" onclick="resetCase()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
           New Case
@@ -910,9 +1047,9 @@
 
 <script>
 // ── CONFIGURATION — fill in both keys before deploying ───────────────────
-const GROQ_API_KEY      = "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";
-const SUPABASE_URL      = "https://cmpeyfercutiamhvcxjp.supabase.co";   // e.g. https://xyzabc.supabase.co
-const SUPABASE_ANON_KEY = "sb_publishable_W_TAJjBbEsNo0aXn9WymGg_-BqivcWi";      // public anon key from Supabase dashboard
+const GROQ_API_KEY      = "YOUR_GROQ_API_KEY_HERE";
+const SUPABASE_URL      = "YOUR_SUPABASE_PROJECT_URL";   // e.g. https://xyzabc.supabase.co
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";      // public anon key from Supabase dashboard
 // ─────────────────────────────────────────────────────────────────────────
 
 // ── SUPABASE AUTH ─────────────────────────────────────────────────────────
@@ -1044,8 +1181,264 @@ function showMsg(el, type, text) {
 }
 
 // Kick off auth check on page load
-window.addEventListener('DOMContentLoaded', initAuth);
+window.addEventListener('DOMContentLoaded', () => { initAuth(); initTierSystem(); });
 // ─────────────────────────────────────────────────────────────────────────
+
+
+// ── TIER / USAGE SYSTEM ──────────────────────────────────────────────────
+// Three tiers: novice (free) → jv (paid mid-tier) → varsity (paid top-tier, unlimited)
+const TIERS = {
+  novice: {
+    label: 'Novice',
+    maxCardsPerCase: 5,    // max combined cards (both contentions) per generation
+    dailyCardCap: 20,      // max total cards generated per calendar day
+    cooldownSeconds: 120   // wait time required between generations
+  },
+  jv: {
+    label: 'JV',
+    maxCardsPerCase: 10,
+    dailyCardCap: 50,
+    cooldownSeconds: 30
+  },
+  varsity: {
+    label: 'Varsity',
+    maxCardsPerCase: Infinity,
+    dailyCardCap: Infinity,
+    cooldownSeconds: 0
+  }
+};
+
+// Storage keys
+const LS_DEV_TIER     = 'hamilton_dev_tier';      // dev-only override: 'novice' | 'jv' | 'varsity'
+const LS_USAGE_KEY    = 'hamilton_daily_usage';   // { date: 'YYYY-MM-DD', count: N }
+const LS_LAST_GEN_KEY = 'hamilton_last_generated'; // timestamp (ms) of last successful generation
+
+function getCurrentTier() {
+  // TODO: once Lemon Squeezy + Supabase billing is wired up, this should read
+  // the user's subscription level from the profiles table instead of localStorage.
+  const stored = localStorage.getItem(LS_DEV_TIER);
+  if (stored && TIERS[stored]) return stored;
+  return 'novice';
+}
+
+function getTierConfig() {
+  return TIERS[getCurrentTier()];
+}
+
+function isProUser() {
+  // Kept for backward compatibility — "Pro" now means the top (varsity) tier
+  return getCurrentTier() === 'varsity';
+}
+
+function getTodayKey() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getDailyUsage() {
+  try {
+    const raw = localStorage.getItem(LS_USAGE_KEY);
+    if (!raw) return { date: getTodayKey(), count: 0 };
+    const parsed = JSON.parse(raw);
+    // Reset if it's a new day
+    if (parsed.date !== getTodayKey()) return { date: getTodayKey(), count: 0 };
+    return parsed;
+  } catch (e) {
+    return { date: getTodayKey(), count: 0 };
+  }
+}
+
+function addDailyUsage(numCards) {
+  const usage = getDailyUsage();
+  usage.count += numCards;
+  localStorage.setItem(LS_USAGE_KEY, JSON.stringify(usage));
+  renderUsageUI();
+}
+
+function resetDailyUsage() {
+  localStorage.removeItem(LS_USAGE_KEY);
+  localStorage.removeItem(LS_LAST_GEN_KEY);
+  renderUsageUI();
+}
+
+function recordGenerationTimestamp() {
+  localStorage.setItem(LS_LAST_GEN_KEY, String(Date.now()));
+}
+
+function getSecondsRemainingInCooldown() {
+  const cfg = getTierConfig();
+  if (cfg.cooldownSeconds <= 0) return 0;
+  const last = parseInt(localStorage.getItem(LS_LAST_GEN_KEY) || '0', 10);
+  if (!last) return 0;
+  const elapsedSeconds = (Date.now() - last) / 1000;
+  const remaining = cfg.cooldownSeconds - elapsedSeconds;
+  return remaining > 0 ? Math.ceil(remaining) : 0;
+}
+
+// Cycles dev tier: novice → jv → varsity → novice ...
+function toggleDevPro() {
+  const order = ['novice', 'jv', 'varsity'];
+  const next = order[(order.indexOf(getCurrentTier()) + 1) % order.length];
+  localStorage.setItem(LS_DEV_TIER, next);
+  renderUsageUI();
+  enforceCardCapUI();
+}
+
+function initTierSystem() {
+  renderUsageUI();
+  enforceCardCapUI();
+  // Re-check the combined-cap note whenever either slider moves
+  document.getElementById('sub1-cards').addEventListener('input', enforceCardCapUI);
+  document.getElementById('sub2-cards').addEventListener('input', enforceCardCapUI);
+  // Tick the cooldown countdown every second
+  setInterval(updateCooldownUI, 1000);
+  updateCooldownUI();
+}
+
+function onCardSliderChange(which) {
+  document.getElementById(which + '-val').textContent = document.getElementById(which + '-cards').value;
+  enforceCardCapUI();
+}
+
+// Updates the tier badge, usage bar, and dev toggle button to reflect current state
+function renderUsageUI() {
+  const tierKey = getCurrentTier();
+  const cfg = getTierConfig();
+  const usage = getDailyUsage();
+
+  const badge = document.getElementById('tier-badge');
+  badge.textContent = cfg.label + ' Tier';
+  badge.className = 'tier-badge ' + (tierKey === 'varsity' ? 'pro' : (tierKey === 'jv' ? 'jv' : 'free'));
+
+  const fill  = document.getElementById('usage-bar-fill');
+  const label = document.getElementById('usage-label');
+  const banner = document.getElementById('upgrade-banner');
+
+  if (cfg.dailyCardCap === Infinity) {
+    fill.style.width = '100%';
+    fill.classList.remove('full');
+    label.textContent = 'Unlimited (' + cfg.label + ')';
+    banner.classList.remove('visible');
+  } else {
+    const pct = Math.min(100, Math.round((usage.count / cfg.dailyCardCap) * 100));
+    fill.style.width = pct + '%';
+    fill.classList.toggle('full', usage.count >= cfg.dailyCardCap);
+    label.textContent = usage.count + ' / ' + cfg.dailyCardCap + ' cards today';
+    if (usage.count >= cfg.dailyCardCap) {
+      const nextTierLabel = tierKey === 'novice' ? 'JV or Varsity' : 'Varsity';
+      document.getElementById('upgrade-banner-text').innerHTML =
+        '<strong>Daily limit reached.</strong> ' + cfg.label + ' tier allows ' + cfg.dailyCardCap + ' cards per day. Upgrade to ' + nextTierLabel + ' for more.';
+      banner.classList.add('visible');
+    } else {
+      banner.classList.remove('visible');
+    }
+  }
+
+  // Word export is a Varsity-only feature
+  const docxBtn = document.getElementById('btn-download-docx');
+  if (docxBtn) docxBtn.style.display = (tierKey === 'varsity') ? '' : 'none';
+
+  const devBtn = document.getElementById('btn-dev-toggle');
+  devBtn.textContent = cfg.label + ' (click to cycle tier)';
+  devBtn.classList.toggle('is-pro', tierKey === 'varsity');
+  devBtn.classList.toggle('is-jv', tierKey === 'jv');
+
+  updateCooldownUI();
+}
+
+// Caps the sliders so their combined total can't exceed the current tier's max,
+// and shows a note explaining the cap.
+function enforceCardCapUI() {
+  const cfg = getTierConfig();
+  const sub1 = document.getElementById('sub1-cards');
+  const sub2 = document.getElementById('sub2-cards');
+  const note = document.getElementById('combined-cap-note');
+
+  if (cfg.maxCardsPerCase === Infinity) {
+    note.textContent = '';
+    return;
+  }
+
+  let v1 = parseInt(sub1.value);
+  let v2 = parseInt(sub2.value);
+
+  if (v1 + v2 > cfg.maxCardsPerCase) {
+    // Clamp the one that wasn't just moved last — simplest fix: clamp sub2 first, then sub1
+    if (v2 > cfg.maxCardsPerCase - v1) {
+      v2 = Math.max(1, cfg.maxCardsPerCase - v1);
+      sub2.value = v2;
+      document.getElementById('sub2-val').textContent = v2;
+    }
+    if (v1 + v2 > cfg.maxCardsPerCase) {
+      v1 = Math.max(1, cfg.maxCardsPerCase - v2);
+      sub1.value = v1;
+      document.getElementById('sub1-val').textContent = v1;
+    }
+  }
+
+  const total = parseInt(sub1.value) + parseInt(sub2.value);
+  note.textContent = getTierConfig().label + ' tier: ' + total + ' / ' + cfg.maxCardsPerCase + ' cards max per case';
+}
+
+// Disables the generate button and shows a live countdown while a cooldown is active
+function updateCooldownUI() {
+  const remaining = getSecondsRemainingInCooldown();
+  const btn = document.getElementById('generate-btn');
+  const cooldownNote = document.getElementById('cooldown-note');
+
+  if (remaining > 0) {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const timeStr = mins > 0 ? (mins + 'm ' + secs + 's') : (secs + 's');
+    cooldownNote.textContent = 'Next case available in ' + timeStr;
+    cooldownNote.style.display = 'inline';
+  } else {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    cooldownNote.style.display = 'none';
+  }
+}
+
+// Called before generation — returns true if allowed, false (and shows an error) if blocked
+function checkUsageAllowed(totalCardsRequested) {
+  const cfg = getTierConfig();
+
+  // Cooldown check first — most likely to block on repeated use
+  const remaining = getSecondsRemainingInCooldown();
+  if (remaining > 0) {
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const timeStr = mins > 0 ? (mins + ' min ' + secs + ' sec') : (secs + ' sec');
+    showError(cfg.label + ' tier requires a wait of ' + cfg.cooldownSeconds + ' seconds between case generations. Please wait ' + timeStr + ' more.');
+    return false;
+  }
+
+  if (totalCardsRequested > cfg.maxCardsPerCase) {
+    showError(cfg.label + ' tier allows a maximum of ' + cfg.maxCardsPerCase + ' cards per case (both contentions combined). Upgrade for more.');
+    return false;
+  }
+
+  if (cfg.dailyCardCap !== Infinity) {
+    const usage = getDailyUsage();
+    if (usage.count + totalCardsRequested > cfg.dailyCardCap) {
+      const remainingCards = Math.max(0, cfg.dailyCardCap - usage.count);
+      showError('Daily limit reached: you have ' + remainingCards + ' card' + (remainingCards === 1 ? '' : 's') + ' left today on the ' + cfg.label + ' tier. Upgrade for more.');
+      document.getElementById('upgrade-banner').classList.add('visible');
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// Placeholder — wire this to real Lemon Squeezy checkout once it's set up
+function handleUpgradeClick() {
+  alert('Upgrade flow coming soon! (This will redirect to Lemon Squeezy checkout once configured.)');
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 
 function resetCase() {
   // Hide output, scroll back to form, clear fields
@@ -1085,6 +1478,10 @@ async function generateCase() {
   if (!topic) { showError('Please enter a resolution or topic.'); return; }
   if (!sub1Title) { showError('Please enter a title for Contention I.'); return; }
   if (!sub2Title) { showError('Please enter a title for Contention II.'); return; }
+
+  // Tier / usage gate
+  const totalCardsRequested = sub1Cards + sub2Cards;
+  if (!checkUsageAllowed(totalCardsRequested)) return;
 
   document.getElementById('loading').className = 'loading-state visible';
   document.getElementById('output-section').className = '';
@@ -1211,6 +1608,13 @@ CRITICAL rules:
 
     renderOutput(parsed, topic, sideLabel, speechLabel);
 
+    // Only count successful generations against the daily cap (varsity tier is unlimited)
+    const cfg = getTierConfig();
+    if (cfg.dailyCardCap !== Infinity) addDailyUsage(totalCardsRequested);
+    // Start the cooldown timer for tiers that have one
+    if (cfg.cooldownSeconds > 0) recordGenerationTimestamp();
+    updateCooldownUI();
+
   } catch (err) {
     showError('Failed to generate case: ' + err.message);
     console.error(err);
@@ -1221,7 +1625,12 @@ CRITICAL rules:
   }
 }
 
+let lastCaseData = null; // cached raw case JSON, used for Word export
+
 function renderOutput(data, topic, sideLabel, speechLabel) {
+  // Cache everything needed to rebuild this case as a Word doc later
+  lastCaseData = { data, topic, sideLabel, speechLabel };
+
   document.getElementById('doc-title').textContent = speechLabel;
   document.getElementById('doc-meta').textContent = topic.length > 80 ? topic.slice(0, 77) + '…' : topic;
   document.getElementById('output-title').innerHTML = sideLabel + ' <em>Case</em>';
@@ -1493,6 +1902,211 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── WORD DOCUMENT EXPORT (Varsity tier only) ────────────────────────────
+async function downloadCaseAsDocx() {
+  if (getCurrentTier() !== 'varsity') {
+    showError('Downloading as a Word document is a Varsity tier feature.');
+    return;
+  }
+  if (!lastCaseData) {
+    showError('No case to export yet — generate a case first.');
+    return;
+  }
+  if (!window.docx) {
+    showError('Word export library failed to load. Check your internet connection and try again.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-download-docx');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.textContent = 'Building…';
+
+  try {
+    const {
+      Document, Packer, Paragraph, TextRun, HeadingLevel,
+      AlignmentType, BorderStyle, ExternalHyperlink, PageBreak
+    } = window.docx;
+
+    const { data, topic, sideLabel, speechLabel } = lastCaseData;
+    const children = [];
+
+    // ── Title page header ──────────────────────────────────────────────
+    children.push(new Paragraph({
+      children: [ new TextRun({ text: 'HAMILTON', bold: true, size: 48, color: '1A1410', font: 'Georgia' }) ],
+      spacing: { after: 60 }
+    }));
+    children.push(new Paragraph({
+      children: [ new TextRun({ text: speechLabel.toUpperCase(), bold: true, size: 24, color: 'B8902A', font: 'Courier New' }) ],
+      spacing: { after: 200 },
+      border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'B8902A', space: 4 } }
+    }));
+    children.push(new Paragraph({
+      children: [ new TextRun({ text: topic, italics: true, size: 24, color: '4A3F35', font: 'Georgia' }) ],
+      spacing: { after: 100 }
+    }));
+    children.push(new Paragraph({
+      children: [ new TextRun({ text: sideLabel + ' Case', size: 20, color: '8A7A6E', font: 'Courier New' }) ],
+      spacing: { after: 400 }
+    }));
+
+    // ── Thesis ────────────────────────────────────────────────────────
+    if (data.tagline) {
+      children.push(new Paragraph({
+        children: [ new TextRun({ text: 'THESIS', bold: true, size: 16, color: '1A1410', font: 'Courier New' }) ],
+        spacing: { after: 80 }
+      }));
+      children.push(new Paragraph({
+        children: [ new TextRun({ text: data.tagline, italics: true, size: 22, color: '4A3F35', font: 'Georgia' }) ],
+        spacing: { after: 400 }
+      }));
+    }
+
+    // ── Each contention ───────────────────────────────────────────────
+    (data.contentions || []).forEach((contention, cIdx) => {
+      if (cIdx > 0) children.push(new Paragraph({ children: [], pageBreakBefore: true }));
+
+      children.push(new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [
+          new TextRun({ text: 'CONTENTION ' + (contention.number || (cIdx + 1)) + ': ', bold: true, size: 28, color: 'B8902A', font: 'Courier New' }),
+          new TextRun({ text: contention.title || '', bold: true, size: 28, color: '1A1410', font: 'Georgia' })
+        ],
+        spacing: { before: 200, after: 160 }
+      }));
+
+      if (contention.overview) {
+        children.push(new Paragraph({
+          children: [ new TextRun({ text: contention.overview, italics: true, size: 22, color: '4A3F35', font: 'Georgia' }) ],
+          spacing: { after: 240 },
+          border: { left: { style: BorderStyle.SINGLE, size: 12, color: 'D6C9B2', space: 8 } }
+        }));
+      }
+
+      (contention.cards || []).forEach((card, cardIdx) => {
+        // Card tag
+        const tagText = (card.tag || '').replace(/\s*[—\-]+\s*Hamilton debate assistant\s*$/i, '');
+        children.push(new Paragraph({
+          children: [ new TextRun({ text: 'CARD ' + (cardIdx + 1) + ': ' + tagText, bold: true, size: 22, color: '8B1A1A', font: 'Courier New' }) ],
+          spacing: { before: 240, after: 80 }
+        }));
+
+        // Citation block — author bold, date bold, title italic, url linked, accessed date, assistant credit
+        const citeRuns = [];
+        if (card.authorFirst || card.authorLast) {
+          if (card.authorFirst) citeRuns.push(new TextRun({ text: card.authorFirst + ' ', size: 19, font: 'Courier New', color: '4A3F35' }));
+          if (card.authorLast)  citeRuns.push(new TextRun({ text: card.authorLast, bold: true, size: 20, font: 'Courier New', color: '1A1410' }));
+          if (card.additionalAuthors) citeRuns.push(new TextRun({ text: ' ' + card.additionalAuthors, size: 19, font: 'Courier New', color: '4A3F35' }));
+        } else if (card.author) {
+          citeRuns.push(new TextRun({ text: card.author, bold: true, size: 20, font: 'Courier New', color: '1A1410' }));
+        }
+        children.push(new Paragraph({ children: citeRuns.length ? citeRuns : [new TextRun({text:'', size:19})], spacing: { after: 40 } }));
+
+        const line2Runs = [];
+        const pubDate = card.publishDate || card.exactDate || card.year || '';
+        if (pubDate) line2Runs.push(new TextRun({ text: pubDate, bold: true, size: 19, font: 'Courier New', color: '4A3F35' }));
+        if (card.sourceTitle) {
+          if (line2Runs.length) line2Runs.push(new TextRun({ text: '  —  ', size: 19, font: 'Courier New', color: '8A7A6E' }));
+          line2Runs.push(new TextRun({ text: card.sourceTitle, italics: true, size: 19, font: 'Georgia', color: '4A3F35' }));
+        }
+        const publisher = card.websiteName || card.publication || '';
+        if (publisher) {
+          if (line2Runs.length) line2Runs.push(new TextRun({ text: '  —  ', size: 19, font: 'Courier New', color: '8A7A6E' }));
+          line2Runs.push(new TextRun({ text: publisher, size: 19, font: 'Courier New', color: '4A3F35' }));
+        }
+        if (line2Runs.length) children.push(new Paragraph({ children: line2Runs, spacing: { after: 40 } }));
+
+        if (card.url && card.url.startsWith('http')) {
+          children.push(new Paragraph({
+            children: [ new ExternalHyperlink({
+              link: card.url,
+              children: [ new TextRun({ text: card.url, size: 18, font: 'Courier New', color: 'B8902A', underline: {} }) ]
+            }) ],
+            spacing: { after: 40 }
+          }));
+        }
+
+        if (card.accessDate) {
+          children.push(new Paragraph({
+            children: [ new TextRun({ text: 'Accessed ' + card.accessDate, italics: true, size: 18, font: 'Courier New', color: '8A7A6E' }) ],
+            spacing: { after: 40 }
+          }));
+        }
+
+        children.push(new Paragraph({
+          children: [ new TextRun({ text: 'Hamilton debate assistant', italics: true, size: 17, font: 'Georgia', color: 'B8902A' }) ],
+          spacing: { after: 160 },
+          border: { top: { style: BorderStyle.SINGLE, size: 2, color: 'E8C97A', space: 2 } }
+        }));
+
+        // Card body — spans, with cut spans highlighted yellow + bold + underline
+        const spans = card.spans || card.segments || [];
+        const bodyRuns = [];
+        if (spans.length) {
+          spans.forEach(span => {
+            if (span.cut) {
+              bodyRuns.push(new TextRun({
+                text: span.text, bold: true, underline: {}, size: 22, font: 'Georgia',
+                color: '1A1410', highlight: 'yellow'
+              }));
+            } else {
+              bodyRuns.push(new TextRun({
+                text: span.text, italics: true, size: 19, font: 'Georgia', color: '666666'
+              }));
+            }
+          });
+        } else if (card.text) {
+          bodyRuns.push(new TextRun({ text: card.text, size: 22, font: 'Georgia' }));
+        }
+
+        children.push(new Paragraph({
+          children: bodyRuns,
+          spacing: { after: 320 },
+          border: { left: { style: BorderStyle.SINGLE, size: 12, color: 'D6C9B2', space: 8 } }
+        }));
+      });
+    });
+
+    const doc = new Document({
+      styles: {
+        default: { document: { run: { font: 'Georgia', size: 22 } } },
+        paragraphStyles: [
+          { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+            run: { size: 28, bold: true, font: 'Georgia' },
+            paragraph: { spacing: { before: 240, after: 160 }, outlineLevel: 0 } }
+        ]
+      },
+      sections: [{
+        properties: {
+          page: {
+            size: { width: 12240, height: 15840 },
+            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+          }
+        },
+        children
+      }]
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeTopic = (topic || 'case').replace(/[^a-z0-9]+/gi, '_').slice(0, 40);
+    a.href = url;
+    a.download = 'Hamilton_' + safeTopic + '.docx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+  } catch (err) {
+    console.error('Docx export failed:', err);
+    showError('Failed to build Word document: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+
 function showError(msg) {
   const el = document.getElementById('error-block');
   el.textContent = '⚠ ' + msg;
@@ -1500,6 +2114,13 @@ function showError(msg) {
 }
 
 </script>
+
+<!-- DEV TOOLS — remove or hide before public launch -->
+<div class="dev-tools">
+  <span class="dev-tools-label">Dev</span>
+  <button class="btn-dev-toggle" id="btn-dev-toggle" onclick="toggleDevPro()">Free</button>
+  <button class="btn-dev-reset" onclick="resetDailyUsage()">Reset usage</button>
+</div>
 
 </body>
 </html>
