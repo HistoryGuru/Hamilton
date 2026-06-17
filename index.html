@@ -1053,7 +1053,7 @@
     <div class="upgrade-banner-text" id="upgrade-banner-text">
       <strong>Daily limit reached.</strong> Free tier allows 20 cards per day. Upgrade to Hamilton Pro for unlimited cutting.
     </div>
-    <button class="btn-upgrade" onclick="handleUpgradeClick()">Upgrade to Pro</button>
+    <button class="btn-upgrade" onclick="handleUpgradeClick('jv')">Upgrade to JV</button>
   </div>
 
   <!-- TOPIC CARD -->
@@ -1223,7 +1223,7 @@
           <li><span class="pf-check">✓</span> Copy individual cards</li>
           <li><span class="pf-cross">✕</span> Word document export</li>
         </ul>
-        <button class="pricing-cta featured" onclick="handleUpgradeClick()">Upgrade to JV</button>
+        <button class="pricing-cta featured" onclick="handleUpgradeClick('jv')">Upgrade to JV</button>
       </div>
 
       <!-- VARSITY -->
@@ -1238,7 +1238,7 @@
           <li><span class="pf-check gold">✓</span> Copy individual cards</li>
           <li><span class="pf-check gold">✓</span> <strong>Word document export</strong></li>
         </ul>
-        <button class="pricing-cta varsity" onclick="handleUpgradeClick()">Upgrade to Varsity</button>
+        <button class="pricing-cta varsity" onclick="handleUpgradeClick('varsity')">Upgrade to Varsity</button>
       </div>
 
     </div>
@@ -1249,13 +1249,15 @@
 
 <script>
 // ── CONFIGURATION — fill in both keys before deploying ───────────────────
-const GROQ_API_KEY      = "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";
-const SUPABASE_URL      = "https://cmpeyfercutiamhvcxjp.supabase.co";   // e.g. https://xyzabc.supabase.co
-const SUPABASE_ANON_KEY = "sb_publishable_W_TAJjBbEsNo0aXn9WymGg_-BqivcWi";      // public anon key from Supabase dashboard
+const GROQ_API_KEY      = "YOUR_GROQ_API_KEY_HERE";
+const SUPABASE_URL      = "YOUR_SUPABASE_PROJECT_URL";   // e.g. https://xyzabc.supabase.co
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";      // public anon key from Supabase dashboard
 // ─────────────────────────────────────────────────────────────────────────
 
 // ── SUPABASE AUTH ─────────────────────────────────────────────────────────
 let _supabase = null;
+let currentUser = null;          // the logged-in Supabase user object
+let dbSubscriptionTier = null;   // tier loaded from the profiles table ('novice' | 'jv' | 'varsity')
 
 async function initAuth() {
   // Guard: if keys aren't filled in yet, skip auth and show app directly (dev mode)
@@ -1301,14 +1303,44 @@ function showAuthWall() {
   document.querySelector('main').style.display = 'none';
 }
 
-function showApp(user) {
+async function showApp(user) {
   document.getElementById('auth-wall').classList.add('hidden');
   document.querySelector('nav').style.display = '';
   document.querySelector('main').style.display = '';
+  currentUser = user;
   if (user) {
     document.getElementById('nav-user-email').textContent = user.email;
     document.getElementById('btn-signout').style.display = '';
+    await fetchSubscriptionTier();
+  } else {
+    dbSubscriptionTier = null;
   }
+  renderUsageUI();
+  enforceCardCapUI();
+}
+
+// Pulls the user's subscription_tier from the profiles table.
+// This is the real source of truth once Lemon Squeezy webhooks are live.
+async function fetchSubscriptionTier() {
+  if (!_supabase || !currentUser) { dbSubscriptionTier = null; return; }
+  try {
+    const { data, error } = await _supabase
+      .from('profiles')
+      .select('subscription_tier')
+      .eq('id', currentUser.id)
+      .single();
+    if (error) {
+      console.warn('Could not fetch subscription tier:', error.message);
+      dbSubscriptionTier = null;
+    } else {
+      dbSubscriptionTier = data?.subscription_tier || 'novice';
+    }
+  } catch (e) {
+    console.warn('fetchSubscriptionTier failed:', e);
+    dbSubscriptionTier = null;
+  }
+  renderUsageUI();
+  enforceCardCapUI();
 }
 
 function switchTab(tab) {
@@ -1384,6 +1416,15 @@ function showMsg(el, type, text) {
 
 // Kick off auth check on page load
 window.addEventListener('DOMContentLoaded', () => { initAuth(); initTierSystem(); });
+
+// Re-check subscription status whenever the user returns to this tab —
+// catches the case where they just completed checkout on Lemon Squeezy
+// and came back, so their new tier shows up without a manual refresh.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && currentUser) {
+    fetchSubscriptionTier();
+  }
+});
 // ─────────────────────────────────────────────────────────────────────────
 
 
@@ -1416,10 +1457,15 @@ const LS_USAGE_KEY    = 'hamilton_daily_usage';   // { date: 'YYYY-MM-DD', count
 const LS_LAST_GEN_KEY = 'hamilton_last_generated'; // timestamp (ms) of last successful generation
 
 function getCurrentTier() {
-  // TODO: once Lemon Squeezy + Supabase billing is wired up, this should read
-  // the user's subscription level from the profiles table instead of localStorage.
+  // Dev override takes priority so you can test any tier locally regardless
+  // of what's actually in the database.
   const stored = localStorage.getItem(LS_DEV_TIER);
   if (stored && TIERS[stored]) return stored;
+
+  // Real source of truth: the subscription_tier column, fetched from Supabase
+  // after sign-in and updated automatically by the Lemon Squeezy webhook.
+  if (dbSubscriptionTier && TIERS[dbSubscriptionTier]) return dbSubscriptionTier;
+
   return 'novice';
 }
 
@@ -1635,9 +1681,34 @@ function checkUsageAllowed(totalCardsRequested) {
   return true;
 }
 
-// Placeholder — wire this to real Lemon Squeezy checkout once it's set up
-function handleUpgradeClick() {
-  alert('Upgrade flow coming soon! (This will redirect to Lemon Squeezy checkout once configured.)');
+// Lemon Squeezy checkout links — JV is live, Varsity still pending
+const LEMONSQUEEZY_CHECKOUT_URLS = {
+  jv:      'https://hamiltondebate.lemonsqueezy.com/checkout/buy/d3146c16-3553-4e66-a359-30f1307a3f7e',
+  varsity: '' // TODO: paste the Varsity checkout link here once it exists
+};
+
+function handleUpgradeClick(targetTier) {
+  // Default to JV if no tier specified (e.g. called from an older button)
+  const tier = targetTier || 'jv';
+  const baseUrl = LEMONSQUEEZY_CHECKOUT_URLS[tier];
+
+  if (!baseUrl) {
+    alert('This plan is not available for checkout yet.');
+    return;
+  }
+  if (!currentUser) {
+    alert('Please sign in before upgrading.');
+    return;
+  }
+
+  // Pass the Supabase user ID and email through as custom checkout data so the
+  // webhook knows exactly which account to upgrade once payment completes.
+  // Lemon Squeezy forwards these back in webhook payloads under meta.custom_data.
+  const url = new URL(baseUrl);
+  url.searchParams.set('checkout[custom][user_id]', currentUser.id);
+  url.searchParams.set('checkout[email]', currentUser.email || '');
+
+  window.location.href = url.toString();
 }
 
 // ── PRICING MODAL ────────────────────────────────────────────────────────
@@ -1947,14 +2018,27 @@ function buildCiteHtml(card) {
   return [line1, line2, line3, line4].filter(Boolean).join('<br>') + line5;
 }
 
+// Shared helper: ensures proper word spacing when joining sub-sentence span
+// fragments. Spans are mid-sentence cuts, so naive concatenation can leave
+// highlighted/cut words jammed against the preceding word with no gap.
+function spanNeedsLeadingSpace(prevText, thisText) {
+  if (!prevText) return false;
+  const prevEndsWithSpace = /\s$/.test(prevText);
+  const thisStartsWithSpace = /^\s/.test(thisText);
+  const thisStartsWithClosingPunct = /^[,.;:!?)\]}'"”’]/.test(thisText);
+  return !prevEndsWithSpace && !thisStartsWithSpace && !thisStartsWithClosingPunct;
+}
+
 function renderCardSegments(card) {
   // Support both "spans" (new) and "segments" (legacy) field names
   const items = card.spans || card.segments;
   if (items && Array.isArray(items)) {
-    // Spans are sub-sentence fragments — join with empty string (no space between),
-    // since the span boundaries fall mid-sentence and spacing is already in the text
     return items.map((span, i) => {
-      const t = escHtml(span.text);
+      let text = span.text || '';
+      if (i > 0 && spanNeedsLeadingSpace(items[i - 1].text || '', text)) {
+        text = ' ' + text;
+      }
+      const t = escHtml(text);
       if (span.cut) {
         return `<span class="seg-cut">${t}</span>`;
       } else {
@@ -2263,15 +2347,28 @@ async function downloadCaseAsDocx() {
         const spans = card.spans || card.segments || [];
         const bodyRuns = [];
         if (spans.length) {
-          spans.forEach(span => {
+          spans.forEach((span, i) => {
+            let text = span.text || '';
+            // Ensure a space between this span and the previous one when the
+            // boundary doesn't already have whitespace and this span doesn't
+            // start with punctuation that should hug the previous word (, . ; : ) ] etc).
+            if (i > 0) {
+              const prevText = spans[i - 1].text || '';
+              const prevEndsWithSpace = /\s$/.test(prevText);
+              const thisStartsWithSpace = /^\s/.test(text);
+              const thisStartsWithClosingPunct = /^[,.;:!?)\]}'"”’]/.test(text);
+              if (!prevEndsWithSpace && !thisStartsWithSpace && !thisStartsWithClosingPunct) {
+                text = ' ' + text;
+              }
+            }
             if (span.cut) {
               bodyRuns.push(new TextRun({
-                text: span.text, bold: true, underline: {}, size: 24, font: 'Calibri',
+                text: text, bold: true, underline: {}, size: 24, font: 'Calibri',
                 color: '000000', highlight: 'darkCyan'
               }));
             } else {
               bodyRuns.push(new TextRun({
-                text: span.text, size: 22, font: 'Calibri', color: '000000'
+                text: text, size: 22, font: 'Calibri', color: '000000'
               }));
             }
           });
