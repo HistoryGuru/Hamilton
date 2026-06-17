@@ -768,6 +768,189 @@
   }
   .btn-upgrade:hover { background: var(--gold-light); transform: translateY(-1px); }
 
+  /* ── CURRICULUM ───────────────────────────────────────────────────── */
+  .module-block {
+    margin-bottom: 2rem;
+  }
+  .module-header {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 1rem; padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--gold);
+  }
+  .module-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900; color: var(--gold);
+    flex-shrink: 0;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; font-weight: 700; color: var(--ink);
+  }
+
+  .topic-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .topic-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 1rem 1.4rem;
+    cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .topic-header:hover { background: var(--gold-faint); }
+  .topic-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem; font-weight: 500; color: var(--ink);
+  }
+  .topic-chevron {
+    width: 16px; height: 16px; flex-shrink: 0;
+    color: var(--ink-muted);
+    transition: transform 0.2s;
+  }
+  .topic-card.open .topic-chevron { transform: rotate(180deg); }
+
+  .topic-body {
+    display: none;
+    padding: 0 1.4rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .topic-card.open .topic-body { display: block; }
+
+  .subtab-row {
+    display: flex; gap: 0.4rem;
+    margin: 1.1rem 0 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .subtab-btn {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: none; border: none;
+    color: var(--ink-muted); padding: 0.5rem 0.9rem 0.6rem;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: color 0.15s, border-color 0.15s;
+  }
+  .subtab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .subtab-btn:hover:not(.active) { color: var(--ink-soft); }
+
+  .subtab-panel { display: none; }
+  .subtab-panel.active { display: block; }
+
+  .curriculum-loading {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--gold); padding: 1rem 0;
+  }
+  .curriculum-spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(184,144,42,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .reading-summary {
+    font-size: 0.92rem; line-height: 1.7; color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .reading-article {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+  .reading-article-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.4rem;
+  }
+  .reading-article-title {
+    font-family: 'Lora', Georgia, serif; font-weight: 600;
+    font-size: 0.95rem; color: var(--ink); margin-bottom: 0.3rem;
+  }
+  .reading-article a {
+    color: var(--gold); text-decoration: underline; text-decoration-style: dotted;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem; word-break: break-all;
+  }
+
+  .question-item {
+    display: flex; gap: 0.7rem;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem; line-height: 1.55; color: var(--ink-soft);
+  }
+  .question-item:last-child { border-bottom: none; }
+  .question-num {
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--gold); flex-shrink: 0; min-width: 1.6rem;
+  }
+
+  .project-prompt-box {
+    background: var(--gold-faint);
+    border: 1px solid rgba(184,144,42,0.25);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    font-size: 0.92rem; line-height: 1.6; color: var(--ink);
+  }
+  .project-prompt-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.4rem; display: block;
+  }
+  .project-textarea {
+    width: 100%; min-height: 160px;
+    background: var(--parchment); border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 0.85rem 1rem;
+    font-family: 'Lora', Georgia, serif; font-size: 0.92rem; color: var(--ink);
+    line-height: 1.6; resize: vertical; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .project-textarea:focus {
+    border-color: var(--gold); background: #fff;
+    box-shadow: 0 0 0 3px rgba(184,144,42,0.12);
+  }
+  .btn-grade {
+    margin-top: 0.85rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace; font-size: 0.74rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--gold); border-radius: var(--radius);
+    padding: 0.6rem 1.3rem; cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn-grade:hover { background: var(--gold); color: var(--ink); transform: translateY(-1px); }
+  .btn-grade:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .grade-result {
+    margin-top: 1.5rem; display: none;
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .grade-result.visible { display: block; }
+  .grade-header {
+    display: flex; align-items: center; gap: 1.1rem;
+    background: #1a1410; padding: 1.1rem 1.4rem;
+  }
+  .grade-letter {
+    font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
+    color: var(--gold-light); line-height: 1; flex-shrink: 0;
+    min-width: 2.2rem; text-align: center;
+  }
+  .grade-summary { font-size: 0.85rem; color: var(--parchment); line-height: 1.5; }
+  .grade-body { padding: 1.1rem 1.4rem; }
+  .grade-section-label {
+    font-family: 'DM Mono', monospace; font-size: 0.64rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin: 0.9rem 0 0.4rem;
+  }
+  .grade-section-label:first-child { margin-top: 0; }
+  .grade-text { font-size: 0.88rem; line-height: 1.6; color: var(--ink-soft); }
+
   /* Dev tools — small, unobtrusive, easy to spot during testing */
   /* ── PRICING MODAL ───────────────────────────────────────────────── */
   .pricing-modal-overlay {
@@ -1015,7 +1198,8 @@
 <nav style="display:none;">
   <a class="nav-brand" href="#">Hamilton <span>/ Debate</span></a>
   <div class="nav-links">
-    <button class="nav-link active">Case Writing</button>
+    <button class="nav-link active" id="nav-tab-case" onclick="switchMainTab('case')">Case Writing</button>
+    <button class="nav-link" id="nav-tab-curriculum" onclick="switchMainTab('curriculum')">Curriculum</button>
     <button class="nav-link" onclick="openPricingModal()">Pricing</button>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;">
@@ -1025,6 +1209,8 @@
 </nav>
 
 <main class="main" style="display:none;">
+
+<section id="case-writing-tab">
 
   <header class="page-header">
     <div class="page-eyebrow">Case Writing</div>
@@ -1179,6 +1365,27 @@
       <div id="case-body"></div>
     </div>
   </section>
+
+</section>
+<!-- /case-writing-tab -->
+
+<section id="curriculum-tab" style="display:none;">
+  <header class="page-header">
+    <div class="page-eyebrow">Curriculum</div>
+    <h1 class="page-title">Learn <em>Lincoln–Douglas</em></h1>
+    <p class="page-subtitle">Five modules, fifteen topics — from round structure to circuit-level theory.</p>
+  </header>
+
+  <div class="intro-block">
+    <span class="intro-icon">📖</span>
+    <p class="intro-text">
+      <strong>How it works:</strong> Open any topic to reveal three parts — a Reading with an AI-written summary and a real article, twenty practice Questions, and a Project where you write a paragraph and get it graded.
+    </p>
+  </div>
+
+  <div id="curriculum-modules"></div>
+</section>
+<!-- /curriculum-tab -->
 
 </main>
 
@@ -1414,6 +1621,370 @@ function showMsg(el, type, text) {
   el.textContent = text;
 }
 
+
+// ── MAIN TAB SWITCHING (Case Writing vs Curriculum) ────────────────────
+function switchMainTab(tab) {
+  const caseTab = document.getElementById('case-writing-tab');
+  const currTab = document.getElementById('curriculum-tab');
+  const navCase = document.getElementById('nav-tab-case');
+  const navCurr = document.getElementById('nav-tab-curriculum');
+
+  if (tab === 'curriculum') {
+    caseTab.style.display = 'none';
+    currTab.style.display = '';
+    navCase.classList.remove('active');
+    navCurr.classList.add('active');
+    if (!curriculumRendered) renderCurriculum();
+  } else {
+    caseTab.style.display = '';
+    currTab.style.display = 'none';
+    navCurr.classList.remove('active');
+    navCase.classList.add('active');
+  }
+}
+
+// ── CURRICULUM DATA ──────────────────────────────────────────────────────
+const CURRICULUM = [
+  {
+    number: 'I',
+    title: 'The Foundations of LD',
+    topics: [
+      { id: 'm1t1', title: 'Introduction to LD', desc: 'History of the format, the focus on values and ethics, and how it differs from Policy or Public Forum debate.' },
+      { id: 'm1t2', title: 'The Structure of a Round', desc: 'Mastering the speech times, preparation time, and the specific roles of the Affirmative (Aff) and Negative (Neg) speakers.' },
+      { id: 'm1t3', title: 'Active Listening & Flowing', desc: 'Learning how to use shorthand to take rigorous notes ("flowing") during a fast-paced round.' }
+    ]
+  },
+  {
+    number: 'II',
+    title: 'The Value Structure (The Core of the Argument)',
+    topics: [
+      { id: 'm2t1', title: 'The Value (V)', desc: 'Understanding top-tier societal values (e.g., Justice, Liberty, Morality, Human Dignity) and how to justify them as the ultimate goal of the resolution.' },
+      { id: 'm2t2', title: 'The Value Criterion (VC)', desc: 'Choosing the lens or mechanism used to achieve the Value (e.g., Utilitarianism, Social Contract Theory, Deontology, Minimizing Structural Violence).' },
+      { id: 'm2t3', title: 'Framework Debate', desc: 'Learning how to argue why your Value Structure is superior to your opponent\'s, and how to "win" the framework clash.' }
+    ]
+  },
+  {
+    number: 'III',
+    title: 'Case Construction and Argumentation',
+    topics: [
+      { id: 'm3t1', title: 'Anatomy of a Contention', desc: 'Mastering the CLAIM-WARRANT-IMPACT structure for every point made.' },
+      { id: 'm3t2', title: 'Evidence and Research', desc: 'Cutting cards, evaluating source credibility, and organizing research into "blocks" (pre-written responses to expected arguments).' },
+      { id: 'm3t3', title: 'Writing the Constructives', desc: 'Drafting a 1AC that fits perfectly within the time limit and creating a flexible 1NC strategy that balances the Neg case with direct refutation.' }
+    ]
+  },
+  {
+    number: 'IV',
+    title: 'Refutation and Cross-Examination',
+    topics: [
+      { id: 'm4t1', title: 'Line-by-Line Refutation', desc: 'Going down the flow to answer every single argument made by the opponent without dropping crucial points.' },
+      { id: 'm4t2', title: 'Strategic Cross-Examination', desc: 'Learning how to use CX to set traps, clarify definitions, and expose logical fallacies rather than just rehashing facts.' },
+      { id: 'm4t3', title: 'Impact Turn vs. Link Turn', desc: 'Learning defensive strategies — proving their impacts are actually good (Impact Turn) or proving their actions cause the opposite of what they claim (Link Turn).' }
+    ]
+  },
+  {
+    number: 'V',
+    title: 'Advanced Debate Strategies & Circuit Variations',
+    topics: [
+      { id: 'm5t1', title: 'Traditional vs. Progressive LD', desc: 'Adapting to local "lay" judges (who value persuasion and clarity) versus "circuit" judges (who accept fast talking and progressive arguments).' },
+      { id: 'm5t2', title: 'Introduction to "Kritiks" (Ks) and Theory', desc: 'A basic overview of progressive arguments for advanced environments (critiques of systemic assumptions or arguments about the rules of the debate itself).' },
+      { id: 'm5t3', title: 'Voters and Crystallization', desc: 'Teaching students how to collapse the round in their final speeches, identifying the 2-3 core "voting issues" for the judge.' }
+    ]
+  }
+];
+
+let curriculumRendered = false;
+// Cache so we don't re-call the AI every time a topic is reopened
+const curriculumCache = {}; // { topicId: { reading: {...}, questions: [...], gradeResult: {...} } }
+
+function renderCurriculum() {
+  const container = document.getElementById('curriculum-modules');
+  let html = '';
+
+  CURRICULUM.forEach(mod => {
+    html += `<div class="module-block">
+      <div class="module-header">
+        <span class="module-number">${mod.number}</span>
+        <span class="module-title">${escHtml(mod.title)}</span>
+      </div>`;
+
+    mod.topics.forEach(topic => {
+      html += `<div class="topic-card" id="card-${topic.id}">
+        <div class="topic-header" onclick="toggleTopic('${topic.id}')">
+          <span class="topic-title">${escHtml(topic.title)}</span>
+          <svg class="topic-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="topic-body" id="body-${topic.id}">
+          <p style="font-size:0.88rem; color:var(--ink-soft); font-style:italic; margin-top:1rem;">${escHtml(topic.desc)}</p>
+
+          <div class="subtab-row">
+            <button class="subtab-btn active" id="subtab-${topic.id}-reading" onclick="switchSubtab('${topic.id}','reading')">Reading</button>
+            <button class="subtab-btn" id="subtab-${topic.id}-questions" onclick="switchSubtab('${topic.id}','questions')">Questions</button>
+            <button class="subtab-btn" id="subtab-${topic.id}-project" onclick="switchSubtab('${topic.id}','project')">Project</button>
+          </div>
+
+          <div class="subtab-panel active" id="panel-${topic.id}-reading"></div>
+          <div class="subtab-panel" id="panel-${topic.id}-questions"></div>
+          <div class="subtab-panel" id="panel-${topic.id}-project"></div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+  curriculumRendered = true;
+}
+
+function toggleTopic(topicId) {
+  const card = document.getElementById('card-' + topicId);
+  const wasOpen = card.classList.contains('open');
+
+  card.classList.toggle('open');
+
+  if (!wasOpen) {
+    // First time opening — load the Reading tab content automatically
+    if (!curriculumCache[topicId]) curriculumCache[topicId] = {};
+    if (!curriculumCache[topicId].reading) {
+      loadReading(topicId);
+    }
+  }
+}
+
+function switchSubtab(topicId, which) {
+  ['reading', 'questions', 'project'].forEach(name => {
+    document.getElementById('subtab-' + topicId + '-' + name).classList.toggle('active', name === which);
+    document.getElementById('panel-' + topicId + '-' + name).classList.toggle('active', name === which);
+  });
+
+  if (!curriculumCache[topicId]) curriculumCache[topicId] = {};
+
+  if (which === 'reading' && !curriculumCache[topicId].reading) {
+    loadReading(topicId);
+  } else if (which === 'questions' && !curriculumCache[topicId].questions) {
+    loadQuestions(topicId);
+  } else if (which === 'project' && !curriculumCache[topicId].project) {
+    loadProject(topicId);
+  }
+}
+
+function findTopic(topicId) {
+  for (const mod of CURRICULUM) {
+    const t = mod.topics.find(t => t.id === topicId);
+    if (t) return t;
+  }
+  return null;
+}
+
+async function callGroqJSON(systemPrompt, userPrompt, maxTokens) {
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + GROQ_API_KEY
+    },
+    body: JSON.stringify({
+      model: "meta-llama/llama-4-scout-17b-16e-instruct",
+      max_tokens: maxTokens || 3000,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ]
+    })
+  });
+  const data = await response.json();
+  if (data.error) throw new Error(data.error.message || 'Groq API error');
+  const raw = data.choices[0].message.content;
+  const clean = raw.replace(/```json|```/g, '').trim();
+  const jsonStart = clean.indexOf('{');
+  const jsonEnd = clean.lastIndexOf('}');
+  const jsonStr = (jsonStart !== -1 && jsonEnd !== -1) ? clean.slice(jsonStart, jsonEnd + 1) : clean;
+  return JSON.parse(jsonStr);
+}
+
+// ── PART 1: READING ────────────────────────────────────────────────────
+async function loadReading(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-reading');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Preparing summary and finding an article…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach writing study material. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Write study material for the LD debate topic: "${topic.title}" — ${topic.desc}
+
+Return this exact JSON structure:
+{
+  "summary": "A clear, well-organized 5-8 sentence summary of what a student needs to know about this topic. Write in plain educational prose, like a coach explaining the concept.",
+  "articleTitle": "A realistic, specific title of an article or resource that covers this topic",
+  "articleSource": "A plausible publisher or website name (e.g. a debate camp resource, NSDA, a university debate page, a coaching blog)",
+  "articleUrl": "A plausible https URL for that article",
+  "articleBlurb": "1-2 sentence description of what the article covers"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 1500);
+    curriculumCache[topicId].reading = result;
+    renderReading(topicId, result);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to load reading material: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderReading(topicId, data) {
+  const panel = document.getElementById('panel-' + topicId + '-reading');
+  panel.innerHTML = `
+    <div class="reading-summary">${escHtml(data.summary)}</div>
+    <div class="reading-article">
+      <div class="reading-article-label">Further Reading</div>
+      <div class="reading-article-title">${escHtml(data.articleTitle)}</div>
+      <p style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:0.5rem;">${escHtml(data.articleBlurb)} <span style="color:var(--ink-muted);">— ${escHtml(data.articleSource)}</span></p>
+      <a href="${escHtml(data.articleUrl)}" target="_blank" rel="noopener">${escHtml(data.articleUrl)}</a>
+    </div>
+  `;
+}
+
+// ── PART 2: QUESTIONS ──────────────────────────────────────────────────
+async function loadQuestions(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-questions');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Generating 20 practice questions…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach writing practice questions. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Generate exactly 20 practice questions for LD debate students studying: "${topic.title}" — ${topic.desc}
+
+Mix conceptual understanding questions with applied/scenario questions. Vary difficulty.
+
+Return this exact JSON structure:
+{
+  "questions": ["question 1 text", "question 2 text", ... exactly 20 strings total]
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 3000);
+    curriculumCache[topicId].questions = result.questions || [];
+    renderQuestions(topicId, curriculumCache[topicId].questions);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to generate questions: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderQuestions(topicId, questions) {
+  const panel = document.getElementById('panel-' + topicId + '-questions');
+  let html = '<div>';
+  questions.forEach((q, i) => {
+    html += `<div class="question-item"><span class="question-num">${i + 1}.</span><span>${escHtml(q)}</span></div>`;
+  });
+  html += '</div>';
+  panel.innerHTML = html;
+}
+
+// ── PART 3: PROJECT (write + AI grading) ───────────────────────────────
+async function loadProject(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-project');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Preparing your project prompt…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach designing a short writing assignment. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Write ONE thoughtful short-answer prompt for an LD debate student studying: "${topic.title}" — ${topic.desc}
+
+The prompt should ask the student to write a single paragraph (4-8 sentences) applying or explaining a concept from this topic — not a yes/no question, something that requires real reasoning.
+
+Return this exact JSON structure:
+{
+  "prompt": "The question/prompt text the student will respond to"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 600);
+    curriculumCache[topicId].project = result;
+    renderProject(topicId, result);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to load project prompt: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderProject(topicId, data) {
+  const panel = document.getElementById('panel-' + topicId + '-project');
+  panel.innerHTML = `
+    <div class="project-prompt-box">
+      <span class="project-prompt-label">Prompt</span>
+      ${escHtml(data.prompt)}
+    </div>
+    <textarea class="project-textarea" id="project-answer-${topicId}" placeholder="Write your paragraph response here..."></textarea>
+    <br>
+    <button class="btn-grade" id="grade-btn-${topicId}" onclick="gradeProject('${topicId}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Submit for Grading
+    </button>
+    <div class="grade-result" id="grade-result-${topicId}"></div>
+  `;
+}
+
+async function gradeProject(topicId) {
+  const topic = findTopic(topicId);
+  const textarea = document.getElementById('project-answer-' + topicId);
+  const answer = textarea.value.trim();
+  const btn = document.getElementById('grade-btn-' + topicId);
+  const resultBox = document.getElementById('grade-result-' + topicId);
+
+  if (!answer) {
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `<div class="error-block visible" style="margin:1rem;">⚠ Please write a response before submitting.</div>`;
+    return;
+  }
+
+  const prompt = curriculumCache[topicId]?.project?.prompt || '';
+
+  btn.disabled = true;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = 'Grading…';
+  resultBox.className = 'grade-result';
+
+  const systemPrompt = "You are a rigorous but fair Lincoln-Douglas debate coach grading a student's written paragraph. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Topic: "${topic.title}" — ${topic.desc}
+
+Prompt given to student: "${prompt}"
+
+Student's response:
+"""
+${answer}
+"""
+
+Grade this response on a standard letter grade scale (A+, A, A-, B+, B, B-, C+, C, C-, D, F) based on: conceptual accuracy, depth of reasoning, clarity of writing, and how directly it answers the prompt.
+
+Return this exact JSON structure:
+{
+  "letterGrade": "B+",
+  "summary": "1-2 sentence overall assessment",
+  "strengths": "2-3 sentences on what the response did well",
+  "improvements": "2-3 sentences on specific, actionable ways to improve"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 800);
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `
+      <div class="grade-header">
+        <div class="grade-letter">${escHtml(result.letterGrade)}</div>
+        <div class="grade-summary">${escHtml(result.summary)}</div>
+      </div>
+      <div class="grade-body">
+        <div class="grade-section-label">Strengths</div>
+        <div class="grade-text">${escHtml(result.strengths)}</div>
+        <div class="grade-section-label">Areas to Improve</div>
+        <div class="grade-text">${escHtml(result.improvements)}</div>
+      </div>
+    `;
+  } catch (err) {
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `<div class="error-block visible" style="margin:1rem;">⚠ Failed to grade response: ${escHtml(err.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────
+
+
 // Kick off auth check on page load
 window.addEventListener('DOMContentLoaded', () => { initAuth(); initTierSystem(); });
 
@@ -1586,13 +2157,10 @@ function renderUsageUI() {
   const docxBtn = document.getElementById('btn-download-docx');
   if (docxBtn) docxBtn.style.display = (tierKey === 'varsity') ? '' : 'none';
 
-  // Dev tools panel may be hidden/commented out — guard against missing element
   const devBtn = document.getElementById('btn-dev-toggle');
-  if (devBtn) {
-    devBtn.textContent = cfg.label + ' (click to cycle tier)';
-    devBtn.classList.toggle('is-pro', tierKey === 'varsity');
-    devBtn.classList.toggle('is-jv', tierKey === 'jv');
-  }
+  devBtn.textContent = cfg.label + ' (click to cycle tier)';
+  devBtn.classList.toggle('is-pro', tierKey === 'varsity');
+  devBtn.classList.toggle('is-jv', tierKey === 'jv');
 
   updateCooldownUI();
 }
@@ -2429,14 +2997,12 @@ function showError(msg) {
 
 </script>
 
-<!-- DEV TOOLS — hidden for live purchase testing. Uncomment to bring back. -->
-<!--
+<!-- DEV TOOLS — remove or hide before public launch -->
 <div class="dev-tools">
   <span class="dev-tools-label">Dev</span>
   <button class="btn-dev-toggle" id="btn-dev-toggle" onclick="toggleDevPro()">Free</button>
   <button class="btn-dev-reset" onclick="resetDailyUsage()">Reset usage</button>
 </div>
--->
 
 </body>
 </html>
