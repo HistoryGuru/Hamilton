@@ -769,6 +769,142 @@
   .btn-upgrade:hover { background: var(--gold-light); transform: translateY(-1px); }
 
   /* Dev tools — small, unobtrusive, easy to spot during testing */
+  /* ── PRICING MODAL ───────────────────────────────────────────────── */
+  .pricing-modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(26, 20, 16, 0.55);
+    align-items: center; justify-content: center;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  .pricing-modal-overlay.visible { display: flex; }
+
+  .pricing-modal {
+    background: var(--parchment);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    max-width: 980px;
+    width: 100%;
+    padding: 2.25rem 2.5rem 2rem;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .pricing-modal-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 1.75rem;
+  }
+  .pricing-modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; font-weight: 900; color: var(--ink);
+  }
+  .pricing-modal-close {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.6rem; line-height: 1;
+    background: none; border: none; color: var(--ink-muted);
+    cursor: pointer; padding: 0.2rem 0.5rem;
+    transition: color 0.15s;
+  }
+  .pricing-modal-close:hover { color: var(--red); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 800px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+  .pricing-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem 1.5rem;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .pricing-card.featured {
+    border: 2px solid var(--red);
+    box-shadow: 0 6px 24px rgba(139,26,26,0.12);
+  }
+  .pricing-card.varsity {
+    border: 2px solid var(--gold);
+    background: #1a1410;
+  }
+  .pricing-card-badge {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--red); color: #fff;
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; border-radius: 2px;
+    white-space: nowrap;
+  }
+  .pricing-card-tier {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900;
+    margin-bottom: 0.6rem;
+  }
+  .pricing-card-tier.free { color: var(--gold); }
+  .pricing-card-tier.jv { color: var(--red); }
+  .pricing-card-tier.varsity { color: var(--gold-light); }
+  .pricing-card-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 900; color: var(--ink); line-height: 1;
+  }
+  .pricing-card.varsity .pricing-card-price { color: var(--parchment); }
+  .pricing-card-price-period {
+    font-size: 1.1rem; font-weight: 400; color: var(--ink-muted);
+  }
+  .pricing-card.varsity .pricing-card-price-period { color: var(--ink-muted); }
+  .pricing-card-price-sub {
+    font-family: 'DM Mono', monospace; font-size: 0.66rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 1.4rem; margin-top: 0.3rem;
+  }
+  .pricing-card.varsity .pricing-card-price-sub { color: #8a7a6e; }
+
+  .pricing-feature-list {
+    list-style: none; margin: 0 0 1.5rem; padding: 0;
+    flex: 1;
+    display: flex; flex-direction: column; gap: 0.65rem;
+  }
+  .pricing-feature-list li {
+    font-size: 0.85rem; color: var(--ink-soft); line-height: 1.4;
+    display: flex; align-items: flex-start; gap: 0.5rem;
+  }
+  .pricing-card.varsity .pricing-feature-list li { color: var(--parchment); }
+  .pricing-feature-list li strong { color: var(--ink); }
+  .pricing-card.varsity .pricing-feature-list li strong { color: var(--gold-light); }
+  .pf-check { color: #2e7d32; font-weight: 700; flex-shrink: 0; }
+  .pf-check.gold { color: var(--gold); }
+  .pf-cross { color: var(--ink-muted); font-weight: 700; flex-shrink: 0; }
+
+  .pricing-cta {
+    width: 100%;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.7rem; border-radius: var(--radius);
+    cursor: pointer; transition: all 0.2s;
+    background: var(--parchment); border: 1px solid var(--border-strong);
+    color: var(--ink-soft);
+  }
+  .pricing-cta:hover:not(:disabled) { border-color: var(--ink); color: var(--ink); }
+  .pricing-cta.featured {
+    background: var(--red); color: #fff; border: none;
+  }
+  .pricing-cta.featured:hover { background: var(--red-soft); transform: translateY(-1px); }
+  .pricing-cta.varsity {
+    background: var(--gold); color: var(--ink); border: none;
+  }
+  .pricing-cta.varsity:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .pricing-modal-footer {
+    margin-top: 1.75rem; text-align: center;
+    font-size: 0.78rem; color: var(--ink-muted); line-height: 1.5;
+  }
+
   .dev-tools {
     position: fixed; bottom: 1rem; right: 1rem; z-index: 500;
     background: #1a1410; border: 1px solid var(--gold);
@@ -880,6 +1016,7 @@
   <a class="nav-brand" href="#">Hamilton <span>/ Debate</span></a>
   <div class="nav-links">
     <button class="nav-link active">Case Writing</button>
+    <button class="nav-link" onclick="openPricingModal()">Pricing</button>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;">
     <span class="nav-user" id="nav-user-email"></span>
@@ -1044,6 +1181,71 @@
   </section>
 
 </main>
+
+<!-- PRICING MODAL -->
+<div id="pricing-modal-overlay" class="pricing-modal-overlay">
+  <div class="pricing-modal">
+    <div class="pricing-modal-header">
+      <div>
+        <div class="page-eyebrow" style="margin-bottom:0.3rem;">Plans &amp; Pricing</div>
+        <h2 class="pricing-modal-title">Choose Your Tier</h2>
+      </div>
+      <button class="pricing-modal-close" onclick="closePricingModal()" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- NOVICE -->
+      <div class="pricing-card">
+        <div class="pricing-card-tier free">Novice</div>
+        <div class="pricing-card-price">Free</div>
+        <div class="pricing-card-price-sub">forever</div>
+        <ul class="pricing-feature-list">
+          <li><span class="pf-check">✓</span> Up to <strong>5 cards</strong> per case</li>
+          <li><span class="pf-check">✓</span> <strong>20 cards</strong> per day</li>
+          <li><span class="pf-cross">—</span> <strong>2 minute</strong> cooldown between cases</li>
+          <li><span class="pf-check">✓</span> Copy individual cards</li>
+          <li><span class="pf-cross">✕</span> Word document export</li>
+        </ul>
+        <button class="pricing-cta" disabled style="opacity:0.5;cursor:not-allowed;">Current Default</button>
+      </div>
+
+      <!-- JV -->
+      <div class="pricing-card featured">
+        <div class="pricing-card-badge">Most Popular</div>
+        <div class="pricing-card-tier jv">JV</div>
+        <div class="pricing-card-price">$5<span class="pricing-card-price-period">/mo</span></div>
+        <div class="pricing-card-price-sub">billed monthly</div>
+        <ul class="pricing-feature-list">
+          <li><span class="pf-check">✓</span> Up to <strong>10 cards</strong> per case</li>
+          <li><span class="pf-check">✓</span> <strong>50 cards</strong> per day</li>
+          <li><span class="pf-check">✓</span> Only <strong>30 second</strong> cooldown</li>
+          <li><span class="pf-check">✓</span> Copy individual cards</li>
+          <li><span class="pf-cross">✕</span> Word document export</li>
+        </ul>
+        <button class="pricing-cta featured" onclick="handleUpgradeClick()">Upgrade to JV</button>
+      </div>
+
+      <!-- VARSITY -->
+      <div class="pricing-card varsity">
+        <div class="pricing-card-tier varsity">Varsity</div>
+        <div class="pricing-card-price">$12<span class="pricing-card-price-period">/mo</span></div>
+        <div class="pricing-card-price-sub">billed monthly</div>
+        <ul class="pricing-feature-list">
+          <li><span class="pf-check gold">✓</span> <strong>Unlimited</strong> cards per case</li>
+          <li><span class="pf-check gold">✓</span> <strong>Unlimited</strong> cards per day</li>
+          <li><span class="pf-check gold">✓</span> <strong>No cooldown</strong> between cases</li>
+          <li><span class="pf-check gold">✓</span> Copy individual cards</li>
+          <li><span class="pf-check gold">✓</span> <strong>Word document export</strong></li>
+        </ul>
+        <button class="pricing-cta varsity" onclick="handleUpgradeClick()">Upgrade to Varsity</button>
+      </div>
+
+    </div>
+
+    <div class="pricing-modal-footer">All plans include full case writing with AI-cut evidence cards, structured citations, and live highlight customization.</div>
+  </div>
+</div>
 
 <script>
 // ── CONFIGURATION — fill in both keys before deploying ───────────────────
@@ -1437,6 +1639,28 @@ function checkUsageAllowed(totalCardsRequested) {
 function handleUpgradeClick() {
   alert('Upgrade flow coming soon! (This will redirect to Lemon Squeezy checkout once configured.)');
 }
+
+// ── PRICING MODAL ────────────────────────────────────────────────────────
+function openPricingModal() {
+  document.getElementById('pricing-modal-overlay').classList.add('visible');
+}
+
+function closePricingModal() {
+  document.getElementById('pricing-modal-overlay').classList.remove('visible');
+}
+
+// Close on backdrop click (not when clicking inside the modal card itself)
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('pricing-modal-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closePricingModal();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePricingModal();
+  });
+});
 // ─────────────────────────────────────────────────────────────────────────
 
 
@@ -1945,17 +2169,12 @@ async function downloadCaseAsDocx() {
       children: [ new TextRun({ text: speechLabel.toUpperCase() + ' — ' + topic, bold: true, size: 32, font: 'Calibri', color: '000000' }) ]
     }));
 
-    // ── Thesis (rendered as a small underlined section header + text) ──
+    // ── Thesis line — just the tagline text, no label ──────────────────
     if (data.tagline) {
       children.push(new Paragraph({
-        alignment: AlignmentType.CENTER,
-        border: { bottom: DOTTED },
-        spacing: { after: 120 },
-        children: [ new TextRun({ text: 'THESIS', bold: true, underline: {}, size: 26, font: 'Calibri', color: '000000' }) ]
-      }));
-      children.push(new Paragraph({
         spacing: { after: 240 },
-        children: [ new TextRun({ text: data.tagline, size: 24, font: 'Calibri', color: '000000' }) ]
+        border: { bottom: DOTTED },
+        children: [ new TextRun({ text: data.tagline, italics: true, size: 24, font: 'Calibri', color: '000000' }) ]
       }));
     }
 
@@ -1993,7 +2212,6 @@ async function downloadCaseAsDocx() {
         children.push(new Paragraph({
           spacing: { before: 200, after: 60 },
           children: [
-            new TextRun({ text: 'CARD ' + (cardIdx + 1) + ': ', bold: true, size: 24, font: 'Calibri', color: '000000' }),
             new TextRun({ text: tagText, bold: true, underline: {}, size: 24, font: 'Calibri', color: '000000' })
           ]
         }));
