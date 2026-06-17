@@ -1903,6 +1903,10 @@ function escHtml(str) {
 }
 
 // ── WORD DOCUMENT EXPORT (Varsity tier only) ────────────────────────────
+// Styled to match the "Verbatim" debate Word add-in convention:
+// bold black tags with underlined keywords, run-on citation line with bold
+// author/date, and cut text in bold+underline+teal highlight inline with
+// small italic gray uncut text — all in one continuous paragraph per card.
 async function downloadCaseAsDocx() {
   if (getCurrentTier() !== 'varsity') {
     showError('Downloading as a Word document is a Varsity tier feature.');
@@ -1924,41 +1928,34 @@ async function downloadCaseAsDocx() {
 
   try {
     const {
-      Document, Packer, Paragraph, TextRun, HeadingLevel,
-      AlignmentType, BorderStyle, ExternalHyperlink, PageBreak
+      Document, Packer, Paragraph, TextRun, AlignmentType,
+      BorderStyle, ExternalHyperlink
     } = window.docx;
 
     const { data, topic, sideLabel, speechLabel } = lastCaseData;
     const children = [];
 
-    // ── Title page header ──────────────────────────────────────────────
+    const DOTTED = { style: BorderStyle.DOTTED, size: 4, color: '000000', space: 4 };
+
+    // ── Title block — boxed, centered, like the Verbatim cover line ─────
     children.push(new Paragraph({
-      children: [ new TextRun({ text: 'HAMILTON', bold: true, size: 48, color: '1A1410', font: 'Georgia' }) ],
-      spacing: { after: 60 }
-    }));
-    children.push(new Paragraph({
-      children: [ new TextRun({ text: speechLabel.toUpperCase(), bold: true, size: 24, color: 'B8902A', font: 'Courier New' }) ],
-      spacing: { after: 200 },
-      border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'B8902A', space: 4 } }
-    }));
-    children.push(new Paragraph({
-      children: [ new TextRun({ text: topic, italics: true, size: 24, color: '4A3F35', font: 'Georgia' }) ],
-      spacing: { after: 100 }
-    }));
-    children.push(new Paragraph({
-      children: [ new TextRun({ text: sideLabel + ' Case', size: 20, color: '8A7A6E', font: 'Courier New' }) ],
-      spacing: { after: 400 }
+      alignment: AlignmentType.CENTER,
+      border: { top: DOTTED, bottom: DOTTED, left: DOTTED, right: DOTTED },
+      spacing: { after: 240 },
+      children: [ new TextRun({ text: speechLabel.toUpperCase() + ' — ' + topic, bold: true, size: 32, font: 'Calibri', color: '000000' }) ]
     }));
 
-    // ── Thesis ────────────────────────────────────────────────────────
+    // ── Thesis (rendered as a small underlined section header + text) ──
     if (data.tagline) {
       children.push(new Paragraph({
-        children: [ new TextRun({ text: 'THESIS', bold: true, size: 16, color: '1A1410', font: 'Courier New' }) ],
-        spacing: { after: 80 }
+        alignment: AlignmentType.CENTER,
+        border: { bottom: DOTTED },
+        spacing: { after: 120 },
+        children: [ new TextRun({ text: 'THESIS', bold: true, underline: {}, size: 26, font: 'Calibri', color: '000000' }) ]
       }));
       children.push(new Paragraph({
-        children: [ new TextRun({ text: data.tagline, italics: true, size: 22, color: '4A3F35', font: 'Georgia' }) ],
-        spacing: { after: 400 }
+        spacing: { after: 240 },
+        children: [ new TextRun({ text: data.tagline, size: 24, font: 'Calibri', color: '000000' }) ]
       }));
     }
 
@@ -1966,115 +1963,114 @@ async function downloadCaseAsDocx() {
     (data.contentions || []).forEach((contention, cIdx) => {
       if (cIdx > 0) children.push(new Paragraph({ children: [], pageBreakBefore: true }));
 
+      // Section divider, e.g. "Overstretch---1AC" style underline header
       children.push(new Paragraph({
-        heading: HeadingLevel.HEADING_1,
+        alignment: AlignmentType.CENTER,
+        border: { bottom: DOTTED },
+        spacing: { before: 120, after: 160 },
+        children: [ new TextRun({ text: (contention.title || '').toUpperCase(), bold: true, underline: {}, size: 26, font: 'Calibri', color: '000000' }) ]
+      }));
+
+      // "Advantage 1---OVERSTRETCH:" style inline header, bold + underlined keyword
+      children.push(new Paragraph({
+        spacing: { after: 160 },
         children: [
-          new TextRun({ text: 'CONTENTION ' + (contention.number || (cIdx + 1)) + ': ', bold: true, size: 28, color: 'B8902A', font: 'Courier New' }),
-          new TextRun({ text: contention.title || '', bold: true, size: 28, color: '1A1410', font: 'Georgia' })
-        ],
-        spacing: { before: 200, after: 160 }
+          new TextRun({ text: 'Contention ' + (contention.number || (cIdx + 1)) + '—', bold: true, size: 24, font: 'Calibri', color: '000000' }),
+          new TextRun({ text: (contention.title || '').toUpperCase() + ':', bold: true, underline: {}, size: 24, font: 'Calibri', color: '000000' })
+        ]
       }));
 
       if (contention.overview) {
         children.push(new Paragraph({
-          children: [ new TextRun({ text: contention.overview, italics: true, size: 22, color: '4A3F35', font: 'Georgia' }) ],
           spacing: { after: 240 },
-          border: { left: { style: BorderStyle.SINGLE, size: 12, color: 'D6C9B2', space: 8 } }
+          children: [ new TextRun({ text: contention.overview, bold: true, underline: {}, size: 24, font: 'Calibri', color: '000000' }) ]
         }));
       }
 
       (contention.cards || []).forEach((card, cardIdx) => {
-        // Card tag
+        // ── Tag line: bold black, with the core claim underlined ──────
         const tagText = (card.tag || '').replace(/\s*[—\-]+\s*Hamilton debate assistant\s*$/i, '');
         children.push(new Paragraph({
-          children: [ new TextRun({ text: 'CARD ' + (cardIdx + 1) + ': ' + tagText, bold: true, size: 22, color: '8B1A1A', font: 'Courier New' }) ],
-          spacing: { before: 240, after: 80 }
+          spacing: { before: 200, after: 60 },
+          children: [
+            new TextRun({ text: 'CARD ' + (cardIdx + 1) + ': ', bold: true, size: 24, font: 'Calibri', color: '000000' }),
+            new TextRun({ text: tagText, bold: true, underline: {}, size: 24, font: 'Calibri', color: '000000' })
+          ]
         }));
 
-        // Citation block — author bold, date bold, title italic, url linked, accessed date, assistant credit
+        // ── Citation: one continuous run-on line, author bold, date bold,
+        //    source title italic, url underlined, all in normal black text ──
         const citeRuns = [];
         if (card.authorFirst || card.authorLast) {
-          if (card.authorFirst) citeRuns.push(new TextRun({ text: card.authorFirst + ' ', size: 19, font: 'Courier New', color: '4A3F35' }));
-          if (card.authorLast)  citeRuns.push(new TextRun({ text: card.authorLast, bold: true, size: 20, font: 'Courier New', color: '1A1410' }));
-          if (card.additionalAuthors) citeRuns.push(new TextRun({ text: ' ' + card.additionalAuthors, size: 19, font: 'Courier New', color: '4A3F35' }));
+          if (card.authorFirst) citeRuns.push(new TextRun({ text: card.authorFirst + ' ', size: 24, font: 'Calibri', color: '000000' }));
+          if (card.authorLast)  citeRuns.push(new TextRun({ text: card.authorLast + '.', bold: true, size: 24, font: 'Calibri', color: '000000' }));
+          if (card.additionalAuthors) citeRuns.push(new TextRun({ text: ' ' + card.additionalAuthors + '.', size: 24, font: 'Calibri', color: '000000' }));
         } else if (card.author) {
-          citeRuns.push(new TextRun({ text: card.author, bold: true, size: 20, font: 'Courier New', color: '1A1410' }));
+          citeRuns.push(new TextRun({ text: card.author + '.', bold: true, size: 24, font: 'Calibri', color: '000000' }));
         }
-        children.push(new Paragraph({ children: citeRuns.length ? citeRuns : [new TextRun({text:'', size:19})], spacing: { after: 40 } }));
 
-        const line2Runs = [];
         const pubDate = card.publishDate || card.exactDate || card.year || '';
-        if (pubDate) line2Runs.push(new TextRun({ text: pubDate, bold: true, size: 19, font: 'Courier New', color: '4A3F35' }));
+        if (pubDate) {
+          citeRuns.push(new TextRun({ text: ' ' + pubDate + '.', bold: true, size: 24, font: 'Calibri', color: '000000' }));
+        }
         if (card.sourceTitle) {
-          if (line2Runs.length) line2Runs.push(new TextRun({ text: '  —  ', size: 19, font: 'Courier New', color: '8A7A6E' }));
-          line2Runs.push(new TextRun({ text: card.sourceTitle, italics: true, size: 19, font: 'Georgia', color: '4A3F35' }));
+          citeRuns.push(new TextRun({ text: ' "' + card.sourceTitle + '".', size: 24, font: 'Calibri', color: '000000' }));
         }
         const publisher = card.websiteName || card.publication || '';
         if (publisher) {
-          if (line2Runs.length) line2Runs.push(new TextRun({ text: '  —  ', size: 19, font: 'Courier New', color: '8A7A6E' }));
-          line2Runs.push(new TextRun({ text: publisher, size: 19, font: 'Courier New', color: '4A3F35' }));
+          citeRuns.push(new TextRun({ text: ' ', size: 24, font: 'Calibri', color: '000000' }));
+          citeRuns.push(new TextRun({ text: publisher, italics: true, size: 24, font: 'Calibri', color: '000000' }));
+          citeRuns.push(new TextRun({ text: '.', size: 24, font: 'Calibri', color: '000000' }));
         }
-        if (line2Runs.length) children.push(new Paragraph({ children: line2Runs, spacing: { after: 40 } }));
-
         if (card.url && card.url.startsWith('http')) {
-          children.push(new Paragraph({
-            children: [ new ExternalHyperlink({
-              link: card.url,
-              children: [ new TextRun({ text: card.url, size: 18, font: 'Courier New', color: 'B8902A', underline: {} }) ]
-            }) ],
-            spacing: { after: 40 }
+          citeRuns.push(new TextRun({ text: ' ', size: 24, font: 'Calibri', color: '000000' }));
+          citeRuns.push(new ExternalHyperlink({
+            link: card.url,
+            children: [ new TextRun({ text: card.url, size: 24, font: 'Calibri', color: '0563C1', underline: {} }) ]
           }));
         }
-
         if (card.accessDate) {
-          children.push(new Paragraph({
-            children: [ new TextRun({ text: 'Accessed ' + card.accessDate, italics: true, size: 18, font: 'Courier New', color: '8A7A6E' }) ],
-            spacing: { after: 40 }
-          }));
+          citeRuns.push(new TextRun({ text: '. Accessed ' + card.accessDate + '.', size: 24, font: 'Calibri', color: '000000' }));
         }
+        citeRuns.push(new TextRun({ text: '  Hamilton debate assistant', italics: true, size: 24, font: 'Calibri', color: '000000' }));
 
         children.push(new Paragraph({
-          children: [ new TextRun({ text: 'Hamilton debate assistant', italics: true, size: 17, font: 'Georgia', color: 'B8902A' }) ],
           spacing: { after: 160 },
-          border: { top: { style: BorderStyle.SINGLE, size: 2, color: 'E8C97A', space: 2 } }
+          children: citeRuns
         }));
 
-        // Card body — spans, with cut spans highlighted yellow + bold + underline
+        // ── Card body — ONE continuous paragraph mixing cut and uncut runs,
+        //    matching Verbatim: cut text bold+underline+teal highlight,
+        //    uncut text plain/smaller black, all inline (not separate blocks) ──
         const spans = card.spans || card.segments || [];
         const bodyRuns = [];
         if (spans.length) {
           spans.forEach(span => {
             if (span.cut) {
               bodyRuns.push(new TextRun({
-                text: span.text, bold: true, underline: {}, size: 22, font: 'Georgia',
-                color: '1A1410', highlight: 'yellow'
+                text: span.text, bold: true, underline: {}, size: 24, font: 'Calibri',
+                color: '000000', highlight: 'darkCyan'
               }));
             } else {
               bodyRuns.push(new TextRun({
-                text: span.text, italics: true, size: 19, font: 'Georgia', color: '666666'
+                text: span.text, size: 22, font: 'Calibri', color: '000000'
               }));
             }
           });
         } else if (card.text) {
-          bodyRuns.push(new TextRun({ text: card.text, size: 22, font: 'Georgia' }));
+          bodyRuns.push(new TextRun({ text: card.text, size: 24, font: 'Calibri', color: '000000' }));
         }
 
         children.push(new Paragraph({
-          children: bodyRuns,
-          spacing: { after: 320 },
-          border: { left: { style: BorderStyle.SINGLE, size: 12, color: 'D6C9B2', space: 8 } }
+          spacing: { after: 280, line: 276 },
+          children: bodyRuns
         }));
       });
     });
 
     const doc = new Document({
       styles: {
-        default: { document: { run: { font: 'Georgia', size: 22 } } },
-        paragraphStyles: [
-          { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true,
-            run: { size: 28, bold: true, font: 'Georgia' },
-            paragraph: { spacing: { before: 240, after: 160 }, outlineLevel: 0 } }
-        ]
+        default: { document: { run: { font: 'Calibri', size: 24, color: '000000' } } }
       },
       sections: [{
         properties: {
