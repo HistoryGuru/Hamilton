@@ -768,6 +768,189 @@
   }
   .btn-upgrade:hover { background: var(--gold-light); transform: translateY(-1px); }
 
+  /* ── CURRICULUM ───────────────────────────────────────────────────── */
+  .module-block {
+    margin-bottom: 2rem;
+  }
+  .module-header {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 1rem; padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--gold);
+  }
+  .module-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900; color: var(--gold);
+    flex-shrink: 0;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; font-weight: 700; color: var(--ink);
+  }
+
+  .topic-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .topic-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 1rem 1.4rem;
+    cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .topic-header:hover { background: var(--gold-faint); }
+  .topic-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem; font-weight: 500; color: var(--ink);
+  }
+  .topic-chevron {
+    width: 16px; height: 16px; flex-shrink: 0;
+    color: var(--ink-muted);
+    transition: transform 0.2s;
+  }
+  .topic-card.open .topic-chevron { transform: rotate(180deg); }
+
+  .topic-body {
+    display: none;
+    padding: 0 1.4rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .topic-card.open .topic-body { display: block; }
+
+  .subtab-row {
+    display: flex; gap: 0.4rem;
+    margin: 1.1rem 0 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .subtab-btn {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: none; border: none;
+    color: var(--ink-muted); padding: 0.5rem 0.9rem 0.6rem;
+    cursor: pointer; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: color 0.15s, border-color 0.15s;
+  }
+  .subtab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .subtab-btn:hover:not(.active) { color: var(--ink-soft); }
+
+  .subtab-panel { display: none; }
+  .subtab-panel.active { display: block; }
+
+  .curriculum-loading {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--gold); padding: 1rem 0;
+  }
+  .curriculum-spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(184,144,42,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .reading-summary {
+    font-size: 0.92rem; line-height: 1.7; color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .reading-article {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+  .reading-article-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.4rem;
+  }
+  .reading-article-title {
+    font-family: 'Lora', Georgia, serif; font-weight: 600;
+    font-size: 0.95rem; color: var(--ink); margin-bottom: 0.3rem;
+  }
+  .reading-article a {
+    color: var(--gold); text-decoration: underline; text-decoration-style: dotted;
+    font-family: 'DM Mono', monospace; font-size: 0.78rem; word-break: break-all;
+  }
+
+  .question-item {
+    display: flex; gap: 0.7rem;
+    padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem; line-height: 1.55; color: var(--ink-soft);
+  }
+  .question-item:last-child { border-bottom: none; }
+  .question-num {
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--gold); flex-shrink: 0; min-width: 1.6rem;
+  }
+
+  .project-prompt-box {
+    background: var(--gold-faint);
+    border: 1px solid rgba(184,144,42,0.25);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    font-size: 0.92rem; line-height: 1.6; color: var(--ink);
+  }
+  .project-prompt-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.4rem; display: block;
+  }
+  .project-textarea {
+    width: 100%; min-height: 160px;
+    background: var(--parchment); border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 0.85rem 1rem;
+    font-family: 'Lora', Georgia, serif; font-size: 0.92rem; color: var(--ink);
+    line-height: 1.6; resize: vertical; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .project-textarea:focus {
+    border-color: var(--gold); background: #fff;
+    box-shadow: 0 0 0 3px rgba(184,144,42,0.12);
+  }
+  .btn-grade {
+    margin-top: 0.85rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--ink); color: var(--gold-light);
+    font-family: 'DM Mono', monospace; font-size: 0.74rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--gold); border-radius: var(--radius);
+    padding: 0.6rem 1.3rem; cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn-grade:hover { background: var(--gold); color: var(--ink); transform: translateY(-1px); }
+  .btn-grade:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .grade-result {
+    margin-top: 1.5rem; display: none;
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .grade-result.visible { display: block; }
+  .grade-header {
+    display: flex; align-items: center; gap: 1.1rem;
+    background: #1a1410; padding: 1.1rem 1.4rem;
+  }
+  .grade-letter {
+    font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
+    color: var(--gold-light); line-height: 1; flex-shrink: 0;
+    min-width: 2.2rem; text-align: center;
+  }
+  .grade-summary { font-size: 0.85rem; color: var(--parchment); line-height: 1.5; }
+  .grade-body { padding: 1.1rem 1.4rem; }
+  .grade-section-label {
+    font-family: 'DM Mono', monospace; font-size: 0.64rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold); margin: 0.9rem 0 0.4rem;
+  }
+  .grade-section-label:first-child { margin-top: 0; }
+  .grade-text { font-size: 0.88rem; line-height: 1.6; color: var(--ink-soft); }
+
   /* Dev tools — small, unobtrusive, easy to spot during testing */
   /* ── PRICING MODAL ───────────────────────────────────────────────── */
   .pricing-modal-overlay {
@@ -951,119 +1134,6 @@
     max-width: 180px; overflow: hidden;
     text-overflow: ellipsis; white-space: nowrap;
   }
-
-  /* ── RESEARCH TAB ─────────────────────────────────────────────────── */
-  .research-lock-card {
-    max-width: 500px; margin: 3rem auto; text-align: center;
-    background: #fff; border: 1px solid var(--border);
-    border-radius: var(--radius-md); padding: 2.5rem 2rem;
-    box-shadow: var(--shadow-lg);
-  }
-  .research-lock-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-  .research-lock-title {
-    font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900;
-    color: var(--ink); margin-bottom: 0.65rem;
-  }
-  .research-lock-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
-  .research-countdown {
-    font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
-    color: var(--gold); margin-top: 1.25rem; letter-spacing: 0.05em;
-  }
-
-  .research-focus-opt {
-    display: flex; cursor: pointer;
-    border: 1px solid var(--border); border-radius: var(--radius-md);
-    padding: 0.85rem 1rem; gap: 0.6rem; transition: border-color 0.15s, background 0.15s;
-  }
-  .research-focus-opt:has(input:checked) {
-    border-color: var(--gold); background: var(--gold-faint);
-  }
-  .research-focus-opt input[type="radio"] { accent-color: var(--gold); margin-top: 0.15rem; flex-shrink: 0; }
-  .research-focus-label { display: flex; flex-direction: column; gap: 0.15rem; }
-  .research-focus-label strong { font-size: 0.88rem; color: var(--ink); }
-  .research-focus-label small { font-size: 0.75rem; color: var(--ink-muted); }
-
-  /* Phase tracker */
-  .research-phase-track {
-    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
-    padding: 1.5rem 1.75rem; margin: 1.5rem 0;
-    display: flex; flex-direction: column; gap: 1.25rem;
-  }
-  .research-phase { display: flex; align-items: flex-start; gap: 1rem; }
-  .rphase-dot {
-    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 0.15rem;
-    border: 2px solid var(--border-strong); background: #fff;
-    transition: all 0.3s;
-  }
-  .rphase-dot.active {
-    border-color: var(--gold); background: var(--gold);
-    box-shadow: 0 0 0 3px rgba(184,144,42,0.2);
-    animation: pulse 1.2s ease-in-out infinite;
-  }
-  .rphase-dot.done { border-color: #2e7d32; background: #2e7d32; animation: none; }
-  @keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(184,144,42,0.2);} 50%{box-shadow:0 0 0 6px rgba(184,144,42,0.08);} }
-  .rphase-label { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); font-weight: 500; }
-  .rphase-sub { font-size: 0.82rem; color: var(--ink-muted); margin-top: 0.2rem; font-style: italic; }
-
-  /* Brief output */
-  .brief-meta {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-strong);
-    flex-wrap: wrap; gap: 0.75rem;
-  }
-  .brief-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--ink); }
-  .brief-title em { color: var(--red); font-style: italic; }
-
-  .brief-tabs { display: flex; gap: 0.4rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--border); }
-  .brief-tab {
-    font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
-    background: none; border: none; color: var(--ink-muted);
-    padding: 0.55rem 1.1rem 0.65rem; cursor: pointer;
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .brief-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-  .brief-tab:hover:not(.active) { color: var(--ink-soft); }
-  .brief-panel { display: none; }
-  .brief-panel.active { display: block; }
-
-  /* Critique panel */
-  .critique-block {
-    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
-    padding: 1.5rem; margin-bottom: 1.25rem;
-  }
-  .critique-block-label {
-    font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 0.6rem; display: block;
-  }
-  .critique-text { font-size: 0.9rem; line-height: 1.7; color: var(--ink-soft); }
-  .critique-weakness {
-    border-left: 3px solid var(--red); padding-left: 0.85rem;
-    font-size: 0.88rem; color: var(--ink-soft); margin-top: 0.85rem; line-height: 1.65;
-  }
-  .critique-strength {
-    border-left: 3px solid #2e7d32; padding-left: 0.85rem;
-    font-size: 0.88rem; color: var(--ink-soft); margin-top: 0.85rem; line-height: 1.65;
-  }
-
-  /* Block file section within a brief panel */
-  .block-section { margin-bottom: 2rem; }
-  .block-section-header {
-    display: flex; align-items: center; gap: 0.75rem;
-    margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gold);
-  }
-  .block-section-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--gold); }
-  .block-section-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
-
-  .block-overview {
-    font-size: 0.88rem; color: var(--ink-soft); font-style: italic; line-height: 1.65;
-    border-left: 3px solid var(--parchment-deep); padding-left: 0.85rem; margin-bottom: 1.25rem;
-  }
-
-  .brief-btn-row {
-    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; padding-top: 1.25rem;
-    border-top: 1px solid var(--border);
-  }
 </style>
 </head>
 <body>
@@ -1129,9 +1199,7 @@
   <a class="nav-brand" href="#">Hamilton <span>/ Debate</span></a>
   <div class="nav-links">
     <button class="nav-link active" id="nav-tab-case" onclick="switchMainTab('case')">Case Writing</button>
-    <button class="nav-link" id="nav-tab-research" onclick="switchMainTab('research')">Research
-      <span style="font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;background:var(--gold);color:var(--ink);padding:0.1rem 0.3rem;border-radius:2px;margin-left:0.3rem;text-transform:uppercase;">Varsity</span>
-    </button>
+    <button class="nav-link" id="nav-tab-curriculum" onclick="switchMainTab('curriculum')">Curriculum</button>
     <button class="nav-link" onclick="openPricingModal()">Pricing</button>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;">
@@ -1298,132 +1366,26 @@
     </div>
   </section>
 
-</section><!-- /case-writing-tab -->
+</section>
+<!-- /case-writing-tab -->
 
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     RESEARCH TAB
-════════════════════════════════════════════════════════════════════════ -->
-<section id="research-tab" style="display:none;">
-
+<section id="curriculum-tab" style="display:none;">
   <header class="page-header">
-    <div class="page-eyebrow">Deep Research</div>
-    <h1 class="page-title">Brief Your <em>Topic</em></h1>
-    <p class="page-subtitle">AI-sourced evidence blocks for Aff and Neg — built from open-access sources, not search snippets.</p>
+    <div class="page-eyebrow">Curriculum</div>
+    <h1 class="page-title">Learn <em>Lincoln–Douglas</em></h1>
+    <p class="page-subtitle">Five modules, fifteen topics — from round structure to circuit-level theory.</p>
   </header>
 
-  <!-- Varsity lock screen -->
-  <div id="research-locked" style="display:none;">
-    <div class="research-lock-card">
-      <div class="research-lock-icon">⚖️</div>
-      <h2 class="research-lock-title">Varsity Feature</h2>
-      <p class="research-lock-desc">Deep Research is available exclusively on the Varsity tier. Upgrade to unlock AI-sourced block files, full Aff and Neg briefs, and critique analysis.</p>
-      <button class="btn-upgrade" onclick="handleUpgradeClick('varsity'); closePricingModal();" style="margin-top:1rem;">Upgrade to Varsity</button>
-    </div>
+  <div class="intro-block">
+    <span class="intro-icon">📖</span>
+    <p class="intro-text">
+      <strong>How it works:</strong> Open any topic to reveal three parts — a Reading with an AI-written summary and a real article, twenty practice Questions, and a Project where you write a paragraph and get it graded.
+    </p>
   </div>
 
-  <!-- Cooldown screen -->
-  <div id="research-cooldown" style="display:none;">
-    <div class="research-lock-card">
-      <div class="research-lock-icon">⏳</div>
-      <h2 class="research-lock-title">Cooldown Active</h2>
-      <p class="research-lock-desc">Deep Research is limited to <strong>one brief every 3 days</strong> to ensure quality. Your next brief is available in:</p>
-      <div class="research-countdown" id="research-countdown-timer">—</div>
-    </div>
-  </div>
-
-  <!-- Research form -->
-  <div id="research-form-section">
-    <div class="intro-block">
-      <span class="intro-icon">🔬</span>
-      <p class="intro-text">
-        <strong>How it works:</strong> Enter your LD resolution. Hamilton will search open-access sources, critique the evidence, then synthesize human-readable Aff and Neg blocks — each with real cut cards. One brief per 3 days.
-      </p>
-    </div>
-
-    <div id="research-cooldown-note" style="display:none;" class="intro-block" style="background:#fff5f5; border-color:rgba(139,26,26,0.2);">
-      <span class="intro-icon">⏳</span>
-      <p class="intro-text" id="research-cooldown-note-text"></p>
-    </div>
-
-    <div class="form-card">
-      <div class="form-card-title">Resolution <span class="card-badge">Step 1</span></div>
-      <div class="field-group">
-        <label for="research-topic">Resolution or Topic</label>
-        <input type="text" id="research-topic" placeholder="e.g. Resolved: The United States federal government should substantially curtail its use of surveillance technology.">
-      </div>
-    </div>
-
-    <div class="form-card">
-      <div class="form-card-title">Research Depth <span class="card-badge">Step 2</span></div>
-      <div class="field-group">
-        <label>Focus</label>
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; margin-top:0.5rem;">
-          <label class="research-focus-opt">
-            <input type="radio" name="research-focus" value="balanced" checked>
-            <span class="research-focus-label">
-              <strong>Balanced</strong>
-              <small>Equal depth Aff + Neg</small>
-            </span>
-          </label>
-          <label class="research-focus-opt">
-            <input type="radio" name="research-focus" value="aff">
-            <span class="research-focus-label">
-              <strong>Aff-heavy</strong>
-              <small>More Aff cards + blocks</small>
-            </span>
-          </label>
-          <label class="research-focus-opt">
-            <input type="radio" name="research-focus" value="neg">
-            <span class="research-focus-label">
-              <strong>Neg-heavy</strong>
-              <small>More Neg cards + blocks</small>
-            </span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="btn-row" style="justify-content:space-between;align-items:center;">
-      <span id="research-limit-note" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--ink-muted);letter-spacing:0.04em;"></span>
-      <button class="btn-generate" id="research-generate-btn" onclick="runDeepResearch()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Generate Brief
-      </button>
-    </div>
-
-    <!-- Loading states -->
-    <div id="research-loading" style="display:none;">
-      <div class="research-phase-track">
-        <div class="research-phase" id="rphase-1">
-          <div class="rphase-dot active" id="rdot-1"></div>
-          <div>
-            <div class="rphase-label">Phase 1: Evidence Gathering</div>
-            <div class="rphase-sub" id="rsub-1">Searching open-access sources for arguments and evidence…</div>
-          </div>
-        </div>
-        <div class="research-phase" id="rphase-2">
-          <div class="rphase-dot" id="rdot-2"></div>
-          <div>
-            <div class="rphase-label">Phase 2: Critique</div>
-            <div class="rphase-sub" id="rsub-2">Evaluating source quality, logical strength, and gaps…</div>
-          </div>
-        </div>
-        <div class="research-phase" id="rphase-3">
-          <div class="rphase-dot" id="rdot-3"></div>
-          <div>
-            <div class="rphase-label">Phase 3: Synthesis</div>
-            <div class="rphase-sub" id="rsub-3">Generating Aff blocks, Neg blocks, and human-readable brief…</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Output -->
-    <div id="research-output" style="display:none;"></div>
-  </div>
-
-</section><!-- /research-tab -->
+  <div id="curriculum-modules"></div>
+</section>
+<!-- /curriculum-tab -->
 
 </main>
 
@@ -1494,9 +1456,9 @@
 
 <script>
 // ── CONFIGURATION — fill in both keys before deploying ───────────────────
-const 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      = "YOUR_GROQ_API_KEY_HERE";
-const https://cmpeyfercutiamhvcxjp.supabase.co      = "YOUR_SUPABASE_PROJECT_URL";   // e.g. https://xyzabc.supabase.co
-const sb_publishable_W_TAJjBbEsNo0aXn9WymGg_-BqivcWi";      // public anon key from Supabase dashboard
+const GROQ_API_KEY      = "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";
+const SUPABASE_URL      = "https://cmpeyfercutiamhvcxjp.supabase.co";   // e.g. https://xyzabc.supabase.co
+const SUPABASE_ANON_KEY = "sb_publishable_W_TAJjBbEsNo0aXn9WymGg_-BqivcWi";      // public anon key from Supabase dashboard
 // ─────────────────────────────────────────────────────────────────────────
 
 // ── SUPABASE AUTH ─────────────────────────────────────────────────────────
@@ -1658,6 +1620,370 @@ function showMsg(el, type, text) {
   el.className = 'auth-msg ' + type;
   el.textContent = text;
 }
+
+
+// ── MAIN TAB SWITCHING (Case Writing vs Curriculum) ────────────────────
+function switchMainTab(tab) {
+  const caseTab = document.getElementById('case-writing-tab');
+  const currTab = document.getElementById('curriculum-tab');
+  const navCase = document.getElementById('nav-tab-case');
+  const navCurr = document.getElementById('nav-tab-curriculum');
+
+  if (tab === 'curriculum') {
+    caseTab.style.display = 'none';
+    currTab.style.display = '';
+    navCase.classList.remove('active');
+    navCurr.classList.add('active');
+    if (!curriculumRendered) renderCurriculum();
+  } else {
+    caseTab.style.display = '';
+    currTab.style.display = 'none';
+    navCurr.classList.remove('active');
+    navCase.classList.add('active');
+  }
+}
+
+// ── CURRICULUM DATA ──────────────────────────────────────────────────────
+const CURRICULUM = [
+  {
+    number: 'I',
+    title: 'The Foundations of LD',
+    topics: [
+      { id: 'm1t1', title: 'Introduction to LD', desc: 'History of the format, the focus on values and ethics, and how it differs from Policy or Public Forum debate.' },
+      { id: 'm1t2', title: 'The Structure of a Round', desc: 'Mastering the speech times, preparation time, and the specific roles of the Affirmative (Aff) and Negative (Neg) speakers.' },
+      { id: 'm1t3', title: 'Active Listening & Flowing', desc: 'Learning how to use shorthand to take rigorous notes ("flowing") during a fast-paced round.' }
+    ]
+  },
+  {
+    number: 'II',
+    title: 'The Value Structure (The Core of the Argument)',
+    topics: [
+      { id: 'm2t1', title: 'The Value (V)', desc: 'Understanding top-tier societal values (e.g., Justice, Liberty, Morality, Human Dignity) and how to justify them as the ultimate goal of the resolution.' },
+      { id: 'm2t2', title: 'The Value Criterion (VC)', desc: 'Choosing the lens or mechanism used to achieve the Value (e.g., Utilitarianism, Social Contract Theory, Deontology, Minimizing Structural Violence).' },
+      { id: 'm2t3', title: 'Framework Debate', desc: 'Learning how to argue why your Value Structure is superior to your opponent\'s, and how to "win" the framework clash.' }
+    ]
+  },
+  {
+    number: 'III',
+    title: 'Case Construction and Argumentation',
+    topics: [
+      { id: 'm3t1', title: 'Anatomy of a Contention', desc: 'Mastering the CLAIM-WARRANT-IMPACT structure for every point made.' },
+      { id: 'm3t2', title: 'Evidence and Research', desc: 'Cutting cards, evaluating source credibility, and organizing research into "blocks" (pre-written responses to expected arguments).' },
+      { id: 'm3t3', title: 'Writing the Constructives', desc: 'Drafting a 1AC that fits perfectly within the time limit and creating a flexible 1NC strategy that balances the Neg case with direct refutation.' }
+    ]
+  },
+  {
+    number: 'IV',
+    title: 'Refutation and Cross-Examination',
+    topics: [
+      { id: 'm4t1', title: 'Line-by-Line Refutation', desc: 'Going down the flow to answer every single argument made by the opponent without dropping crucial points.' },
+      { id: 'm4t2', title: 'Strategic Cross-Examination', desc: 'Learning how to use CX to set traps, clarify definitions, and expose logical fallacies rather than just rehashing facts.' },
+      { id: 'm4t3', title: 'Impact Turn vs. Link Turn', desc: 'Learning defensive strategies — proving their impacts are actually good (Impact Turn) or proving their actions cause the opposite of what they claim (Link Turn).' }
+    ]
+  },
+  {
+    number: 'V',
+    title: 'Advanced Debate Strategies & Circuit Variations',
+    topics: [
+      { id: 'm5t1', title: 'Traditional vs. Progressive LD', desc: 'Adapting to local "lay" judges (who value persuasion and clarity) versus "circuit" judges (who accept fast talking and progressive arguments).' },
+      { id: 'm5t2', title: 'Introduction to "Kritiks" (Ks) and Theory', desc: 'A basic overview of progressive arguments for advanced environments (critiques of systemic assumptions or arguments about the rules of the debate itself).' },
+      { id: 'm5t3', title: 'Voters and Crystallization', desc: 'Teaching students how to collapse the round in their final speeches, identifying the 2-3 core "voting issues" for the judge.' }
+    ]
+  }
+];
+
+let curriculumRendered = false;
+// Cache so we don't re-call the AI every time a topic is reopened
+const curriculumCache = {}; // { topicId: { reading: {...}, questions: [...], gradeResult: {...} } }
+
+function renderCurriculum() {
+  const container = document.getElementById('curriculum-modules');
+  let html = '';
+
+  CURRICULUM.forEach(mod => {
+    html += `<div class="module-block">
+      <div class="module-header">
+        <span class="module-number">${mod.number}</span>
+        <span class="module-title">${escHtml(mod.title)}</span>
+      </div>`;
+
+    mod.topics.forEach(topic => {
+      html += `<div class="topic-card" id="card-${topic.id}">
+        <div class="topic-header" onclick="toggleTopic('${topic.id}')">
+          <span class="topic-title">${escHtml(topic.title)}</span>
+          <svg class="topic-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="topic-body" id="body-${topic.id}">
+          <p style="font-size:0.88rem; color:var(--ink-soft); font-style:italic; margin-top:1rem;">${escHtml(topic.desc)}</p>
+
+          <div class="subtab-row">
+            <button class="subtab-btn active" id="subtab-${topic.id}-reading" onclick="switchSubtab('${topic.id}','reading')">Reading</button>
+            <button class="subtab-btn" id="subtab-${topic.id}-questions" onclick="switchSubtab('${topic.id}','questions')">Questions</button>
+            <button class="subtab-btn" id="subtab-${topic.id}-project" onclick="switchSubtab('${topic.id}','project')">Project</button>
+          </div>
+
+          <div class="subtab-panel active" id="panel-${topic.id}-reading"></div>
+          <div class="subtab-panel" id="panel-${topic.id}-questions"></div>
+          <div class="subtab-panel" id="panel-${topic.id}-project"></div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+  curriculumRendered = true;
+}
+
+function toggleTopic(topicId) {
+  const card = document.getElementById('card-' + topicId);
+  const wasOpen = card.classList.contains('open');
+
+  card.classList.toggle('open');
+
+  if (!wasOpen) {
+    // First time opening — load the Reading tab content automatically
+    if (!curriculumCache[topicId]) curriculumCache[topicId] = {};
+    if (!curriculumCache[topicId].reading) {
+      loadReading(topicId);
+    }
+  }
+}
+
+function switchSubtab(topicId, which) {
+  ['reading', 'questions', 'project'].forEach(name => {
+    document.getElementById('subtab-' + topicId + '-' + name).classList.toggle('active', name === which);
+    document.getElementById('panel-' + topicId + '-' + name).classList.toggle('active', name === which);
+  });
+
+  if (!curriculumCache[topicId]) curriculumCache[topicId] = {};
+
+  if (which === 'reading' && !curriculumCache[topicId].reading) {
+    loadReading(topicId);
+  } else if (which === 'questions' && !curriculumCache[topicId].questions) {
+    loadQuestions(topicId);
+  } else if (which === 'project' && !curriculumCache[topicId].project) {
+    loadProject(topicId);
+  }
+}
+
+function findTopic(topicId) {
+  for (const mod of CURRICULUM) {
+    const t = mod.topics.find(t => t.id === topicId);
+    if (t) return t;
+  }
+  return null;
+}
+
+async function callGroqJSON(systemPrompt, userPrompt, maxTokens) {
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + GROQ_API_KEY
+    },
+    body: JSON.stringify({
+      model: "meta-llama/llama-4-scout-17b-16e-instruct",
+      max_tokens: maxTokens || 3000,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt }
+      ]
+    })
+  });
+  const data = await response.json();
+  if (data.error) throw new Error(data.error.message || 'Groq API error');
+  const raw = data.choices[0].message.content;
+  const clean = raw.replace(/```json|```/g, '').trim();
+  const jsonStart = clean.indexOf('{');
+  const jsonEnd = clean.lastIndexOf('}');
+  const jsonStr = (jsonStart !== -1 && jsonEnd !== -1) ? clean.slice(jsonStart, jsonEnd + 1) : clean;
+  return JSON.parse(jsonStr);
+}
+
+// ── PART 1: READING ────────────────────────────────────────────────────
+async function loadReading(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-reading');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Preparing summary and finding an article…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach writing study material. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Write study material for the LD debate topic: "${topic.title}" — ${topic.desc}
+
+Return this exact JSON structure:
+{
+  "summary": "A clear, well-organized 5-8 sentence summary of what a student needs to know about this topic. Write in plain educational prose, like a coach explaining the concept.",
+  "articleTitle": "A realistic, specific title of an article or resource that covers this topic",
+  "articleSource": "A plausible publisher or website name (e.g. a debate camp resource, NSDA, a university debate page, a coaching blog)",
+  "articleUrl": "A plausible https URL for that article",
+  "articleBlurb": "1-2 sentence description of what the article covers"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 1500);
+    curriculumCache[topicId].reading = result;
+    renderReading(topicId, result);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to load reading material: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderReading(topicId, data) {
+  const panel = document.getElementById('panel-' + topicId + '-reading');
+  panel.innerHTML = `
+    <div class="reading-summary">${escHtml(data.summary)}</div>
+    <div class="reading-article">
+      <div class="reading-article-label">Further Reading</div>
+      <div class="reading-article-title">${escHtml(data.articleTitle)}</div>
+      <p style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:0.5rem;">${escHtml(data.articleBlurb)} <span style="color:var(--ink-muted);">— ${escHtml(data.articleSource)}</span></p>
+      <a href="${escHtml(data.articleUrl)}" target="_blank" rel="noopener">${escHtml(data.articleUrl)}</a>
+    </div>
+  `;
+}
+
+// ── PART 2: QUESTIONS ──────────────────────────────────────────────────
+async function loadQuestions(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-questions');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Generating 20 practice questions…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach writing practice questions. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Generate exactly 20 practice questions for LD debate students studying: "${topic.title}" — ${topic.desc}
+
+Mix conceptual understanding questions with applied/scenario questions. Vary difficulty.
+
+Return this exact JSON structure:
+{
+  "questions": ["question 1 text", "question 2 text", ... exactly 20 strings total]
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 3000);
+    curriculumCache[topicId].questions = result.questions || [];
+    renderQuestions(topicId, curriculumCache[topicId].questions);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to generate questions: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderQuestions(topicId, questions) {
+  const panel = document.getElementById('panel-' + topicId + '-questions');
+  let html = '<div>';
+  questions.forEach((q, i) => {
+    html += `<div class="question-item"><span class="question-num">${i + 1}.</span><span>${escHtml(q)}</span></div>`;
+  });
+  html += '</div>';
+  panel.innerHTML = html;
+}
+
+// ── PART 3: PROJECT (write + AI grading) ───────────────────────────────
+async function loadProject(topicId) {
+  const topic = findTopic(topicId);
+  const panel = document.getElementById('panel-' + topicId + '-project');
+  panel.innerHTML = `<div class="curriculum-loading"><div class="curriculum-spinner"></div> Preparing your project prompt…</div>`;
+
+  const systemPrompt = "You are an expert Lincoln-Douglas debate coach designing a short writing assignment. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Write ONE thoughtful short-answer prompt for an LD debate student studying: "${topic.title}" — ${topic.desc}
+
+The prompt should ask the student to write a single paragraph (4-8 sentences) applying or explaining a concept from this topic — not a yes/no question, something that requires real reasoning.
+
+Return this exact JSON structure:
+{
+  "prompt": "The question/prompt text the student will respond to"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 600);
+    curriculumCache[topicId].project = result;
+    renderProject(topicId, result);
+  } catch (err) {
+    panel.innerHTML = `<div class="error-block visible">⚠ Failed to load project prompt: ${escHtml(err.message)}</div>`;
+  }
+}
+
+function renderProject(topicId, data) {
+  const panel = document.getElementById('panel-' + topicId + '-project');
+  panel.innerHTML = `
+    <div class="project-prompt-box">
+      <span class="project-prompt-label">Prompt</span>
+      ${escHtml(data.prompt)}
+    </div>
+    <textarea class="project-textarea" id="project-answer-${topicId}" placeholder="Write your paragraph response here..."></textarea>
+    <br>
+    <button class="btn-grade" id="grade-btn-${topicId}" onclick="gradeProject('${topicId}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Submit for Grading
+    </button>
+    <div class="grade-result" id="grade-result-${topicId}"></div>
+  `;
+}
+
+async function gradeProject(topicId) {
+  const topic = findTopic(topicId);
+  const textarea = document.getElementById('project-answer-' + topicId);
+  const answer = textarea.value.trim();
+  const btn = document.getElementById('grade-btn-' + topicId);
+  const resultBox = document.getElementById('grade-result-' + topicId);
+
+  if (!answer) {
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `<div class="error-block visible" style="margin:1rem;">⚠ Please write a response before submitting.</div>`;
+    return;
+  }
+
+  const prompt = curriculumCache[topicId]?.project?.prompt || '';
+
+  btn.disabled = true;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = 'Grading…';
+  resultBox.className = 'grade-result';
+
+  const systemPrompt = "You are a rigorous but fair Lincoln-Douglas debate coach grading a student's written paragraph. Respond ONLY with valid compact JSON, no markdown, no commentary.";
+  const userPrompt = `Topic: "${topic.title}" — ${topic.desc}
+
+Prompt given to student: "${prompt}"
+
+Student's response:
+"""
+${answer}
+"""
+
+Grade this response on a standard letter grade scale (A+, A, A-, B+, B, B-, C+, C, C-, D, F) based on: conceptual accuracy, depth of reasoning, clarity of writing, and how directly it answers the prompt.
+
+Return this exact JSON structure:
+{
+  "letterGrade": "B+",
+  "summary": "1-2 sentence overall assessment",
+  "strengths": "2-3 sentences on what the response did well",
+  "improvements": "2-3 sentences on specific, actionable ways to improve"
+}`;
+
+  try {
+    const result = await callGroqJSON(systemPrompt, userPrompt, 800);
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `
+      <div class="grade-header">
+        <div class="grade-letter">${escHtml(result.letterGrade)}</div>
+        <div class="grade-summary">${escHtml(result.summary)}</div>
+      </div>
+      <div class="grade-body">
+        <div class="grade-section-label">Strengths</div>
+        <div class="grade-text">${escHtml(result.strengths)}</div>
+        <div class="grade-section-label">Areas to Improve</div>
+        <div class="grade-text">${escHtml(result.improvements)}</div>
+      </div>
+    `;
+  } catch (err) {
+    resultBox.className = 'grade-result visible';
+    resultBox.innerHTML = `<div class="error-block visible" style="margin:1rem;">⚠ Failed to grade response: ${escHtml(err.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 
 // Kick off auth check on page load
 window.addEventListener('DOMContentLoaded', () => { initAuth(); initTierSystem(); });
@@ -2450,510 +2776,6 @@ function esc(str) {
 }
 
 
-
-// ── DEEP RESEARCH SYSTEM ──────────────────────────────────────────────────
-const LS_RESEARCH_LAST = 'hamilton_research_last'; // timestamp of last brief
-const RESEARCH_COOLDOWN_DAYS = 3;
-const RESEARCH_COOLDOWN_MS   = RESEARCH_COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
-
-// Open-access domains we bias toward (comma-separated for prompt injection)
-const OPEN_ACCESS_SOURCES = [
-  'scholar.google.com', 'jstor.org/stable', 'ncbi.nlm.nih.gov', 'arxiv.org',
-  'brookings.edu', 'rand.org', 'pewresearch.org', 'cato.org', 'heritage.org',
-  'aclu.org', 'eff.org', 'brennancenter.org', 'hrw.org', 'amnesty.org',
-  'bbc.com', 'reuters.com', 'apnews.com', 'thehill.com', 'politico.com',
-  'congress.gov', 'gao.gov', 'cbo.gov', 'whitehouse.gov', 'law.cornell.edu',
-  'acrobat.adobe.com', 'ssrn.com', 'researchgate.net'
-].join(', ');
-
-// ── MAIN TAB SWITCHING ──────────────────────────────────────────────────
-function switchMainTab(tab) {
-  const caseTab = document.getElementById('case-writing-tab');
-  const resTab  = document.getElementById('research-tab');
-  const navCase = document.getElementById('nav-tab-case');
-  const navRes  = document.getElementById('nav-tab-research');
-
-  if (tab === 'research') {
-    caseTab.style.display = 'none';
-    resTab.style.display  = '';
-    navCase.classList.remove('active');
-    navRes.classList.add('active');
-    initResearchTab();
-  } else {
-    resTab.style.display  = 'none';
-    caseTab.style.display = '';
-    navCase.classList.add('active');
-    navRes.classList.remove('active');
-  }
-}
-
-function initResearchTab() {
-  const tier  = getCurrentTier();
-  const locked    = document.getElementById('research-locked');
-  const cooldown  = document.getElementById('research-cooldown');
-  const formSec   = document.getElementById('research-form-section');
-
-  if (tier !== 'varsity') {
-    locked.style.display   = '';
-    cooldown.style.display = 'none';
-    formSec.style.display  = 'none';
-    return;
-  }
-
-  const secLeft = getResearchCooldownSecsLeft();
-  if (secLeft > 0) {
-    locked.style.display   = 'none';
-    cooldown.style.display = '';
-    formSec.style.display  = 'none';
-    startCooldownDisplay(secLeft);
-    return;
-  }
-
-  locked.style.display   = 'none';
-  cooldown.style.display = 'none';
-  formSec.style.display  = '';
-
-  // Show next-available info
-  const noteEl = document.getElementById('research-limit-note');
-  if (noteEl) noteEl.textContent = 'Varsity · 1 brief per 3 days';
-}
-
-function getResearchCooldownSecsLeft() {
-  const last = parseInt(localStorage.getItem(LS_RESEARCH_LAST) || '0', 10);
-  if (!last) return 0;
-  const elapsed = Date.now() - last;
-  const remaining = RESEARCH_COOLDOWN_MS - elapsed;
-  return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
-}
-
-function startCooldownDisplay(secsLeft) {
-  const el = document.getElementById('research-countdown-timer');
-  if (!el) return;
-
-  function fmt(s) {
-    const d = Math.floor(s / 86400);
-    const h = Math.floor((s % 86400) / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const sec = s % 60;
-    return `${d}d ${h}h ${m}m ${sec}s`;
-  }
-
-  let s = secsLeft;
-  el.textContent = fmt(s);
-  const iv = setInterval(() => {
-    s--;
-    if (s <= 0) {
-      clearInterval(iv);
-      initResearchTab();
-    } else {
-      el.textContent = fmt(s);
-    }
-  }, 1000);
-}
-
-// ── THREE-PHASE PIPELINE ──────────────────────────────────────────────────
-async function callGroq(systemPrompt, userPrompt, maxTokens) {
-  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + GROQ_API_KEY
-    },
-    body: JSON.stringify({
-      model: "meta-llama/llama-4-scout-17b-16e-instruct",
-      max_tokens: maxTokens || 4000,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt }
-      ]
-    })
-  });
-  const data = await response.json();
-  if (data.error) throw new Error(data.error.message || 'Groq API error');
-  const raw = data.choices[0].message.content || '';
-  const clean = raw.replace(/```json|```/g, '').trim();
-  const s = clean.indexOf('{');
-  const e = clean.lastIndexOf('}');
-  return JSON.parse(s !== -1 && e !== -1 ? clean.slice(s, e + 1) : clean);
-}
-
-function setPhase(num) {
-  [1,2,3].forEach(n => {
-    const dot = document.getElementById('rdot-' + n);
-    if (n < num)  { dot.className = 'rphase-dot done'; }
-    else if (n === num) { dot.className = 'rphase-dot active'; }
-    else { dot.className = 'rphase-dot'; }
-  });
-}
-
-function setPhaseNote(num, txt) {
-  const el = document.getElementById('rsub-' + num);
-  if (el) el.textContent = txt;
-}
-
-async function runDeepResearch() {
-  if (getCurrentTier() !== 'varsity') {
-    showError('Deep Research is a Varsity-only feature.'); return;
-  }
-  if (getResearchCooldownSecsLeft() > 0) {
-    showError('You are in a cooldown period. Your next brief will be available soon.'); return;
-  }
-
-  const topic = document.getElementById('research-topic').value.trim();
-  if (!topic) { showError('Please enter a resolution or topic.'); return; }
-
-  const focus = document.querySelector('input[name="research-focus"]:checked')?.value || 'balanced';
-
-  // Show loading
-  const btn = document.getElementById('research-generate-btn');
-  btn.disabled = true; btn.style.opacity = '0.5';
-  document.getElementById('research-loading').style.display = '';
-  document.getElementById('research-output').style.display = 'none';
-  document.getElementById('research-output').innerHTML = '';
-  setPhase(1);
-
-  try {
-    // ─── PHASE 1: Evidence Gathering ──────────────────────────────────────
-    setPhaseNote(1, 'Generating arguments and sourcing real evidence across open-access databases…');
-
-    const affWeight = focus === 'neg' ? 3 : (focus === 'aff' ? 5 : 4);
-    const negWeight = focus === 'aff' ? 3 : (focus === 'neg' ? 5 : 4);
-
-    const phase1Sys = `You are a senior Lincoln-Douglas debate researcher with access to open-access academic, government, and news sources. Respond ONLY in compact valid JSON, no markdown, no commentary.
-
-Critical constraint: ONLY cite sources from open-access publishers. Prioritize these domains: ${OPEN_ACCESS_SOURCES}. Never cite paywalled journals (Nature, JSTOR subscription content, WSJ, NYT paywall, etc.) unless they have a free-access link.`;
-
-    const phase1Prompt = `Topic: "${topic}"
-Focus weighting: ${affWeight} Aff arguments, ${negWeight} Neg arguments
-
-For each argument, generate evidence cards from real-sounding, specific open-access sources. Each card must have the Frankenstein-cut span structure used in competitive LD.
-
-Return this exact JSON:
-{
-  "topicContext": "2-3 sentences explaining the debate landscape for this resolution",
-  "aff": {
-    "valueFramework": "A compelling Aff value and criterion pairing with brief justification",
-    "arguments": [
-      {
-        "contention": "Contention title",
-        "overview": "2-3 sentence argument overview",
-        "cards": [
-          {
-            "tag": "Short claim this card proves",
-            "authorFirst": "First",
-            "authorLast": "LastName",
-            "additionalAuthors": "",
-            "publishDate": "Month Day, Year",
-            "accessDate": "Month Day, Year",
-            "sourceTitle": "Full title of article/report",
-            "websiteName": "Publisher or site name",
-            "publication": "",
-            "url": "https://open-access-url.org/article",
-            "spans": [
-              {"text": "uncut context phrase", "cut": false},
-              {"text": "key evidence phrase to be read aloud", "cut": true},
-              {"text": "more context", "cut": false},
-              {"text": "clinching conclusion phrase", "cut": true},
-              {"text": "closing context", "cut": false}
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "neg": {
-    "valueFramework": "A compelling Neg value and criterion pairing with brief justification",
-    "arguments": [
-      {
-        "contention": "Contention title",
-        "overview": "2-3 sentence argument overview",
-        "cards": [
-          {
-            "tag": "Short claim this card proves",
-            "authorFirst": "First",
-            "authorLast": "LastName",
-            "additionalAuthors": "",
-            "publishDate": "Month Day, Year",
-            "accessDate": "Month Day, Year",
-            "sourceTitle": "Full title of article/report",
-            "websiteName": "Publisher or site name",
-            "publication": "",
-            "url": "https://open-access-url.org/article",
-            "spans": [
-              {"text": "uncut context phrase", "cut": false},
-              {"text": "key evidence phrase to be read aloud", "cut": true},
-              {"text": "more context", "cut": false},
-              {"text": "clinching conclusion phrase", "cut": true},
-              {"text": "closing context", "cut": false}
-            ]
-          }
-        ]
-      }
-    ]
-  }
-}
-
-Make ${affWeight} Aff arguments with 2 cards each, and ${negWeight} Neg arguments with 2 cards each. All spans must be realistic sentence fragments — never whole sentences.`;
-
-    const phase1 = await callGroq(phase1Sys, phase1Prompt, 7000);
-    setPhase(2);
-
-    // ─── PHASE 2: Critique ─────────────────────────────────────────────────
-    setPhaseNote(2, 'Stress-testing argument logic, identifying vulnerabilities and source gaps…');
-
-    const phase2Sys = `You are a senior debate judge and coach critically evaluating research briefs. Respond ONLY in compact valid JSON, no markdown, no commentary.`;
-
-    const phase2Prompt = `You are critiquing this research brief on: "${topic}"
-
-Aff framework: ${phase1.aff?.valueFramework || ''}
-Aff contentions: ${(phase1.aff?.arguments || []).map(a => a.contention + ': ' + a.overview).join(' | ')}
-
-Neg framework: ${phase1.neg?.valueFramework || ''}
-Neg contentions: ${(phase1.neg?.arguments || []).map(a => a.contention + ': ' + a.overview).join(' | ')}
-
-Provide a hard-nosed critique. Identify real logical weaknesses, missing evidence, unaddressed counterarguments, and framework vulnerabilities. Don't be gentle — identify where each side could be attacked.
-
-Return this exact JSON:
-{
-  "affCritique": {
-    "frameworkWeakness": "Specific vulnerability in the Aff framework",
-    "evidenceGaps": "What evidence is missing or could be challenged",
-    "topVulnerability": "The single most likely line of Neg attack",
-    "frameworkStrength": "What the Aff framework does well"
-  },
-  "negCritique": {
-    "frameworkWeakness": "Specific vulnerability in the Neg framework",
-    "evidenceGaps": "What evidence is missing or could be challenged",
-    "topVulnerability": "The single most likely line of Aff attack",
-    "frameworkStrength": "What the Neg framework does well"
-  },
-  "clashPoints": [
-    "Key point of clash 1",
-    "Key point of clash 2",
-    "Key point of clash 3"
-  ],
-  "researcherNote": "1-2 sentences of honest advice on how to use this brief"
-}`;
-
-    const phase2 = await callGroq(phase2Sys, phase2Prompt, 2000);
-    setPhase(3);
-
-    // ─── PHASE 3: Synthesis (block files) ─────────────────────────────────
-    setPhaseNote(3, 'Building complete block files with refined language and counter-blocks…');
-
-    const phase3Sys = `You are an expert LD debate coach writing polished, competition-ready block files. Respond ONLY in compact valid JSON, no markdown, no commentary.`;
-
-    const phase3Prompt = `You are writing block files for: "${topic}"
-
-Based on this critique:
-Aff vulnerability: ${phase2.affCritique?.topVulnerability || ''}
-Neg vulnerability: ${phase2.negCritique?.topVulnerability || ''}
-Key clash points: ${(phase2.clashPoints || []).join('; ')}
-
-Generate pre-written block responses (blocks = pre-written responses to expected arguments you'll face in round).
-
-Return this exact JSON:
-{
-  "affBlocks": [
-    {
-      "title": "Block name (what Neg argument this answers)",
-      "summary": "2 sentences on how to deploy this block",
-      "response": "The full human-readable response text a debater would read or adapt — 4-6 sentences, clear and persuasive, directly answering the attack"
-    }
-  ],
-  "negBlocks": [
-    {
-      "title": "Block name (what Aff argument this answers)",
-      "summary": "2 sentences on how to deploy this block",
-      "response": "The full human-readable response text — 4-6 sentences, clear and persuasive"
-    }
-  ]
-}
-
-Generate 3 Aff blocks and 3 Neg blocks.`;
-
-    const phase3 = await callGroq(phase3Sys, phase3Prompt, 2500);
-    setPhase(3);
-    setPhaseNote(3, 'Complete.');
-
-    // Record timestamp for cooldown
-    localStorage.setItem(LS_RESEARCH_LAST, String(Date.now()));
-
-    // Render output
-    renderResearchOutput(topic, phase1, phase2, phase3);
-
-  } catch (err) {
-    showError('Research pipeline failed: ' + err.message);
-    console.error(err);
-  } finally {
-    btn.disabled = false; btn.style.opacity = '1';
-    document.getElementById('research-loading').style.display = 'none';
-  }
-}
-
-// ── RENDER ────────────────────────────────────────────────────────────────
-function renderResearchOutput(topic, p1, p2, p3) {
-  const outputEl = document.getElementById('research-output');
-  outputEl.style.display = '';
-
-  // Build per-side block file HTML using same card structure as case writing
-  const affHtml  = buildSideHtml('aff', p1.aff, p2.affCritique);
-  const negHtml  = buildSideHtml('neg', p1.neg, p2.negCritique);
-  const affBlocksHtml = buildBlocksHtml(p3.affBlocks || [], 'Aff');
-  const negBlocksHtml = buildBlocksHtml(p3.negBlocks || [], 'Neg');
-  const critiqueHtml  = buildCritiqueHtml(p1, p2);
-
-  outputEl.innerHTML = `
-    <div class="ornament" style="margin-bottom:2rem;">— ✦ —</div>
-
-    <div class="brief-meta">
-      <div>
-        <div class="output-meta">Deep Research Brief</div>
-        <h2 class="brief-title">Research: <em>${escHtml(topic.length > 60 ? topic.slice(0,57)+'…' : topic)}</em></h2>
-        ${p1.topicContext ? `<div class="output-meta" style="margin-top:0.3rem;font-style:italic;color:var(--ink-soft);max-width:600px;font-size:0.8rem;">${escHtml(p1.topicContext)}</div>` : ''}
-      </div>
-    </div>
-
-    <div class="brief-tabs">
-      <button class="brief-tab active" id="btab-aff"     onclick="switchBriefTab('aff')">Aff Brief</button>
-      <button class="brief-tab"        id="btab-neg"     onclick="switchBriefTab('neg')">Neg Brief</button>
-      <button class="brief-tab"        id="btab-affblk"  onclick="switchBriefTab('affblk')">Aff Blocks</button>
-      <button class="brief-tab"        id="btab-negblk"  onclick="switchBriefTab('negblk')">Neg Blocks</button>
-      <button class="brief-tab"        id="btab-critique" onclick="switchBriefTab('critique')">Critique</button>
-    </div>
-
-    <div class="brief-panel active" id="bpanel-aff">${affHtml}</div>
-    <div class="brief-panel"        id="bpanel-neg">${negHtml}</div>
-    <div class="brief-panel"        id="bpanel-affblk">${affBlocksHtml}</div>
-    <div class="brief-panel"        id="bpanel-negblk">${negBlocksHtml}</div>
-    <div class="brief-panel"        id="bpanel-critique">${critiqueHtml}</div>
-  `;
-
-  outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function switchBriefTab(which) {
-  ['aff','neg','affblk','negblk','critique'].forEach(t => {
-    document.getElementById('btab-' + t)?.classList.toggle('active', t === which);
-    document.getElementById('bpanel-' + t)?.classList.toggle('active', t === which);
-  });
-}
-
-function buildSideHtml(side, sideData, critique) {
-  if (!sideData) return '<p style="color:var(--ink-muted)">No data generated.</p>';
-  const sideLabel = side === 'aff' ? 'Affirmative' : 'Negative';
-
-  let html = '';
-  if (sideData.valueFramework) {
-    html += `<div class="form-card" style="margin-bottom:1.5rem;">
-      <div class="form-card-title">Framework</div>
-      <p style="font-size:0.9rem;line-height:1.65;color:var(--ink-soft);">${escHtml(sideData.valueFramework)}</p>
-    </div>`;
-  }
-
-  (sideData.arguments || []).forEach((arg, i) => {
-    html += `<div class="block-section">
-      <div class="block-section-header">
-        <span class="block-section-num">${['I','II','III','IV','V'][i] || (i+1)}</span>
-        <span class="block-section-title">${escHtml(arg.contention)}</span>
-      </div>
-      <p class="block-overview">${escHtml(arg.overview)}</p>`;
-
-    (arg.cards || []).forEach((card, ci) => {
-      const cardId = `r-${side}-${i}-${ci}`;
-      html += buildResearchCard(card, cardId, ci);
-    });
-    html += `</div>`;
-  });
-
-  return html;
-}
-
-function buildResearchCard(card, cardId, idx) {
-  const tagText = (card.tag || '').replace(/\s*[—\-]+\s*Hamilton debate assistant\s*$/i, '');
-  const citeHtml = buildCiteHtml(card);
-  const bodyHtml = buildResearchCardBody(card);
-
-  return `<div class="card-block" id="${cardId}">
-    <div class="card-block-header">
-      <span class="card-num">Card ${idx + 1}</span>
-      <span class="card-tag">${escHtml(tagText)}</span>
-      <span class="card-status">✓ Cut</span>
-      <button class="btn-copy-card" onclick="copyCard('${cardId}', this)">Copy</button>
-    </div>
-    <div class="card-block-body">
-      <div class="card-cite">${citeHtml}</div>
-      <div class="card-text">${bodyHtml}</div>
-    </div>
-  </div>`;
-}
-
-function buildResearchCardBody(card) {
-  const spans = card.spans || card.segments || [];
-  if (!spans.length) return card.text ? escHtml(card.text) : '';
-  return spans.map((span, i) => {
-    let text = span.text || '';
-    if (i > 0 && spanNeedsLeadingSpace(spans[i-1].text || '', text)) text = ' ' + text;
-    const t = escHtml(text);
-    return span.cut
-      ? `<span class="seg-cut">${t}</span>`
-      : `<span class="seg-uncut">${t}</span>`;
-  }).join('');
-}
-
-function buildBlocksHtml(blocks, side) {
-  if (!blocks.length) return '<p style="color:var(--ink-muted)">No blocks generated.</p>';
-  let html = `<div style="margin-bottom:1rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);">${side} Pre-Written Block Responses</div>`;
-  blocks.forEach((block, i) => {
-    html += `<div class="form-card" style="margin-bottom:1.25rem;">
-      <div class="form-card-title" style="margin-bottom:0.6rem;">${escHtml(block.title)}</div>
-      <p style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--ink-muted);margin-bottom:0.85rem;font-style:italic;">${escHtml(block.summary)}</p>
-      <div style="border-left:3px solid var(--gold);padding-left:0.85rem;font-size:0.9rem;line-height:1.7;color:var(--ink-soft);">${escHtml(block.response)}</div>
-    </div>`;
-  });
-  return html;
-}
-
-function buildCritiqueHtml(p1, p2) {
-  let html = '';
-
-  if (p2.researcherNote) {
-    html += `<div class="critique-block" style="border-left:3px solid var(--gold);margin-bottom:1.5rem;">
-      <span class="critique-block-label">Researcher Note</span>
-      <div class="critique-text" style="font-style:italic;">${escHtml(p2.researcherNote)}</div>
-    </div>`;
-  }
-
-  if (p2.clashPoints?.length) {
-    html += `<div class="critique-block">
-      <span class="critique-block-label">Key Points of Clash</span>
-      <ul style="margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:0.4rem;">
-        ${p2.clashPoints.map(c => `<li style="font-size:0.9rem;color:var(--ink-soft);">${escHtml(c)}</li>`).join('')}
-      </ul>
-    </div>`;
-  }
-
-  const sides = [
-    { key: 'aff', label: 'Affirmative', data: p2.affCritique },
-    { key: 'neg', label: 'Negative',    data: p2.negCritique }
-  ];
-
-  sides.forEach(({ label, data }) => {
-    if (!data) return;
-    html += `<div class="critique-block">
-      <span class="critique-block-label">${label} Critique</span>
-      ${data.frameworkStrength ? `<div class="critique-strength"><strong style="font-size:0.78rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:#2e7d32;">Strength</strong><br>${escHtml(data.frameworkStrength)}</div>` : ''}
-      ${data.frameworkWeakness ? `<div class="critique-weakness" style="margin-top:0.75rem;"><strong style="font-size:0.78rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);">Framework Weakness</strong><br>${escHtml(data.frameworkWeakness)}</div>` : ''}
-      ${data.evidenceGaps ? `<div class="critique-weakness" style="margin-top:0.75rem;"><strong style="font-size:0.78rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);">Evidence Gaps</strong><br>${escHtml(data.evidenceGaps)}</div>` : ''}
-      ${data.topVulnerability ? `<div class="critique-weakness" style="margin-top:0.75rem;background:#fff5f5;"><strong style="font-size:0.78rem;font-family:'DM Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);">Top Vulnerability</strong><br>${escHtml(data.topVulnerability)}</div>` : ''}
-    </div>`;
-  });
-
-  return html;
-}
-// ─────────────────────────────────────────────────────────────────────────
-
-
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -3184,3 +3006,5 @@ function showError(msg) {
 
 </body>
 </html>
+
+
